@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.UpgradeNoticeDao">
+	<resultMap type="UpgradeNotice" id="UpgradeNoticeResultMap">
+		<id property="id" column="ID" javaType="java.lang.Long"/>
+		<result property="functionId" column="FUNCTIONID"/>
+		<result property="content" column="CONTENT"/>
+		<result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+		<result property="upgradeDate" column="UPGRADE_DATE" jdbcType="DATE" javaType="java.util.Date"/>
+		<result property="oaOrderNo" column="OA_ORDER_NO"/>
+		<result property="operator" column="OPERATOR"/>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="UpgradeNotice">
+		INSERT INTO TBL_UPGRADE_NOTICE
+		(
+			FUNCTIONID, CONTENT, CREATE_DATE, UPGRADE_DATE, OA_ORDER_NO, OPERATOR
+		)
+			VALUES
+			(
+				#{functionId,jdbcType=BIGINT},
+				#{content,jdbcType=VARCHAR},
+				#{createDate,jdbcType=TIMESTAMP},
+				#{upgradeDate,jdbcType=DATE},
+				#{oaOrderNo,jdbcType=VARCHAR},
+				#{operator,jdbcType=VARCHAR}
+			)
+	</insert>
+
+	<select id="selectById" parameterType="java.lang.Long" resultMap="UpgradeNoticeResultMap">
+		SELECT
+			*
+		FROM TBL_UPGRADE_NOTICE
+		WHERE ID = #{id}
+		 
+	</select>
+
+	<update id="update" parameterType="UpgradeNotice">
+		UPDATE TBL_UPGRADE_NOTICE
+		<set>
+			<if test="functionId != null">FUNCTIONID = #{functionId,jdbcType=BIGINT},</if>
+			<if test="content != null">CONTENT = #{content,jdbcType=VARCHAR},</if>
+			<if test="upgradeDate != null">UPGRADE_DATE = #{upgradeDate,jdbcType=DATE},</if>
+			<if test="oaOrderNo != null">OA_ORDER_NO = #{oaOrderNo,jdbcType=VARCHAR},</if>
+			<if test="operator != null">OPERATOR = #{operator,jdbcType=VARCHAR}</if>
+		</set>
+		WHERE ID = #{id}
+	</update>
+
+	<delete id="delete" parameterType="long">
+		DELETE FROM TBL_UPGRADE_NOTICE
+		WHERE ID = #{id}
+	</delete>
+
+	<select id="queryNoticeForUser" resultMap="UpgradeNoticeResultMap" parameterType="map">
+		SELECT
+			N.*
+		FROM
+			TBL_UPGRADE_NOTICE N
+		WHERE
+			N.FUNCTIONID = #{functionId,jdbcType=BIGINT}
+			AND NOT EXISTS
+			(
+					SELECT
+						*
+					FROM
+						TBL_UPGRADE_NOTICE_HIDE H
+					WHERE H.NOTICEID = N.ID
+					      AND H.USERID = #{userId,jdbcType=BIGINT}
+			)
+		ORDER BY N.CREATE_DATE DESC
+		FETCH FIRST 1 ROWS ONLY
+		 
+	</select>
+
+	<select id="checkExist" resultMap="UpgradeNoticeResultMap" parameterType="UpgradeNotice">
+		SELECT
+			*
+		FROM
+			TBL_UPGRADE_NOTICE
+		WHERE
+			FUNCTIONID = #{functionId,jdbcType=BIGINT}
+			AND CONTENT = #{content,jdbcType=VARCHAR}
+		 
+	</select>
+</mapper>

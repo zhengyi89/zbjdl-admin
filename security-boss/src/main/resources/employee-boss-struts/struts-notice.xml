@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.zbjdl.boss.admin.notice" extends="employee-default"
+		namespace="/notice">
+		<!-- 展示公告 -->
+		<action name="showNotice"
+			class="com.zbjdl.boss.admin.notice.action.NoticeManageAction"
+			method="showNotice">
+			<result name="success">/WEB-INF/pages/notice/showNotice.jsp</result>
+			<interceptor-ref name="defaultStack" />
+		</action>
+
+		<!-- 不再提示公告 -->
+		<action name="closeNotice"
+			class="com.zbjdl.boss.admin.notice.action.NoticeManageAction"
+			method="closeNotice">
+			<result name="success">/WEB-INF/pages/notice/showNotice.jsp</result>
+		</action>
+
+		<!-- 公告管理 -->
+		<action name="noticeMgr"
+			class="com.zbjdl.boss.admin.notice.action.NoticeManageAction">
+			<result name="success">/WEB-INF/pages/notice/noticeMgr.jsp</result>
+		</action>
+
+		<!-- 跳转到公告编辑页面 -->
+		<action name="editNotice"
+			class="com.zbjdl.boss.admin.notice.action.NoticeManageAction"
+			method="editNotice">
+			<result name="success">/WEB-INF/pages/notice/editNotice.jsp</result>
+		</action>
+
+		<!-- 保存公告 -->
+		<action name="saveNotice"
+			class="com.zbjdl.boss.admin.notice.action.NoticeManageAction"
+			method="saveNotice">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<!-- 公告删除 -->
+		<action name="deleteNotice"
+			class="com.zbjdl.boss.admin.notice.action.NoticeManageAction"
+			method="deleteNotice">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+	</package>
+</struts>

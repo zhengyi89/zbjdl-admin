@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+<!-- 	<import resource="classpath:/employee-core-spring/employee-datasource.xml" /> -->
+<!-- 	<import resource="classpath:/employee-core-spring/employee-dao-appContext.xml" /> -->
+	<import resource="classpath:/employee-core-spring/employee-service-appContext.xml" />
+	<import resource="classpath:/employee-core-spring/employee-biz-appContext.xml" />
+	<import resource="classpath:/employee-core-spring/employee-facade-appContext.xml" />
+<!-- 	<import resource="classpath:/employee-core-spring/applicationContext-dubbo-provider.xml" />
+ -->
+</beans>

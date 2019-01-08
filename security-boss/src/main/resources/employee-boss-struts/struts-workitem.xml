@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.zbjdl.boss.admin.workitem" extends="employee-default"
+		namespace="/workitem">
+
+		<interceptors>
+			<interceptor-stack name="workItemDefaultStack">
+				<interceptor-ref name="alias"/>
+				<interceptor-ref name="servletConfig"/>
+				<interceptor-ref name="i18n"/>
+				<interceptor-ref name="prepare"/>
+				<interceptor-ref name="chain"/>
+				<interceptor-ref name="scopedModelDriven"/>
+				<interceptor-ref name="modelDriven"/>
+				<interceptor-ref name="fileUpload"/>
+				<interceptor-ref name="checkbox"/>
+				<interceptor-ref name="multiselect"/>
+				<interceptor-ref name="staticParams"/>
+				<interceptor-ref name="actionMappingParams"/>
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*</param>
+				</interceptor-ref>
+				<interceptor-ref name="conversionError"/>
+				<interceptor-ref name="validation">
+						<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+				<interceptor-ref name="workflow">
+						<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+				<interceptor-ref name="debugging"/>
+			</interceptor-stack>
+
+			<interceptor-stack name="workItemInterceptorStack">
+				<interceptor-ref name="paramInterceptor"/>
+				<interceptor-ref name="exceptionInterceptor" />
+				<interceptor-ref name="ssoInterceptor" />
+				<interceptor-ref name="menuInterceptor" />
+				<interceptor-ref name="operationLogInterceptor" />
+				<interceptor-ref name="authorityInterceptor" />
+				<interceptor-ref name="workItemDefaultStack" />
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="workItemInterceptorStack" />
+
+		<!-- 审核人查询审核记录 -->
+		<action name="queryWorkItem" class="com.zbjdl.boss.admin.workitem.action.WorkItemManagerAction" method="queryWorkItem">
+			<result name="success">/WEB-INF/pages/workitem/workItem_mgr.jsp</result>
+		</action>
+		<!-- 审核人查询风控审核记录 -->
+		<action name="queryForPreAudit" class="com.zbjdl.boss.admin.workitem.action.WorkItemManagerAction" method="queryForPreAudit">
+			<result name="success">/WEB-INF/pages/workitem/workItem_pre_audit.jsp</result>
+		</action>
+
+		<!--申请人查询审核记录  -->
+		<action name="queryWorkItemForSubmit" class="com.zbjdl.boss.admin.workitem.action.WorkItemManagerAction" method="queryWorkItemForSubmit">
+			<result name="success">/WEB-INF/pages/workitem/workItem_mgr_submit.jsp</result>
+		</action>
+
+		<!-- 风控审核 -->
+		<action name="preAudit" class="com.zbjdl.boss.admin.workitem.action.WorkItemManagerAction" method="preAudit">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		<!-- 审核 -->
+		<action name="auditItem" class="com.zbjdl.boss.admin.workitem.action.WorkItemManagerAction" method="audit">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<!-- 撤销审核 -->
+		<action name="cancelItem" class="com.zbjdl.boss.admin.workitem.action.WorkItemManagerAction" method="cancel">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<!-- 审核拒绝 -->
+		<action name="refuseItem" class="com.zbjdl.boss.admin.workitem.action.WorkItemManagerAction" method="refuse">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="lockWorkItem" class="com.zbjdl.boss.admin.workitem.action.WorkItemManagerAction" method="lockWorkItem">
+			<result name="success">/WEB-INF/pages/workitem/control/workItem_detail.jsp</result>
+		</action>
+		<action name="unLockWorkItem" class="com.zbjdl.boss.admin.workitem.action.WorkItemManagerAction" method="unLockWorkItem">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<!-- 申请人查看审核记录详情 -->
+		<action name="showItemDetail" class="com.zbjdl.boss.admin.workitem.action.WorkItemManagerAction" method="showItemDetail">
+			<result name="success">/WEB-INF/pages/workitem/control/workItem_detail.jsp</result>
+		</action>
+
+	</package>
+</struts>

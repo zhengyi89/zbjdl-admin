@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zbjdl.boss.admin.repository.DepartmentAndFunctionRelationDao">
+	<resultMap type="DepartmentAndFunctionRelation" id="DepartmentAndFunctionRelationResultMap">
+		<id property="relationId" column="relationid" javaType="java.lang.Long"/>
+		<result property="departmentId" column="departmentid" javaType="java.lang.Long"/>
+		<result property="functionId" column="functionid" javaType="java.lang.Long"/>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="relationId"
+		parameterType="DepartmentAndFunctionRelation">
+		insert into TBL_DEPARTMENTANDFUNCTIONRELATION
+		(
+			departmentId,functionId
+		)
+		values
+		(
+			#{departmentId,jdbcType=BIGINT},
+			#{functionId,jdbcType=BIGINT}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="long">
+		delete from
+		TBL_DEPARTMENTANDFUNCTIONRELATION where relationId = #{relationId}
+	</delete>
+
+	<delete id="deleteDepartmentAndFunctionRelation" parameterType="DepartmentAndFunctionRelation">
+		delete from TBL_DEPARTMENTANDFUNCTIONRELATION where departmentId = #{departmentId} and functionId = #{functionId}
+	</delete>
+
+	<update id="update" parameterType="DepartmentAndFunctionRelation">
+		update TBL_DEPARTMENTANDFUNCTIONRELATION
+		<set>
+			<if test="departmentId != null">departmentId = #{departmentId},</if>
+			<if test="functionId != null">functionId = #{functionId},</if>
+		</set>
+	</update>
+
+	<select id="query" parameterType="DepartmentAndFunctionRelation" resultType="DepartmentAndFunctionRelation">
+		select * from TBL_DEPARTMENTANDFUNCTIONRELATION
+		<where>
+			<if test="departmentId != null">departmentId = #{departmentId}</if>
+			<if test="functionId != null">functionId = #{functionId}</if>
+		</where>
+		 
+	</select>
+
+	<select id="queryFunctionByDepartmentId" parameterType="java.lang.Long" resultType="DepartmentAndFunctionRelation">
+		select * from TBL_DEPARTMENTANDFUNCTIONRELATION where departmentId = #{value}
+		 
+	</select>
+
+	<select id="queryDepartmentByFunctionId" parameterType="java.lang.Long" resultType="DepartmentAndFunctionRelation">
+		select * from TBL_DEPARTMENTANDFUNCTIONRELATION where functionId = #{value}
+		 
+	</select>
+
+	<select id="selectById" parameterType="long" resultType="DepartmentAndFunctionRelation">
+		select * from TBL_DEPARTMENTANDFUNCTIONRELATION where relationId = #{relationId}
+		 
+	</select>
+
+	<select id="findAll" resultType="DepartmentAndFunctionRelation">
+		select * from TBL_DEPARTMENTANDFUNCTIONRELATION
+		 
+	</select>
+
+	<delete id="deleteDepartmentAndFunctionByDepartmentId" parameterType="long">
+		delete from
+		TBL_DEPARTMENTANDFUNCTIONRELATION where DEPARTMENTID = #{departmentId}
+	</delete>
+
+	<delete id="deleteDepartmentAndFunctionByFunctionId" parameterType="long">
+		delete from TBL_DEPARTMENTANDFUNCTIONRELATION where functionId = #{functionId}
+	</delete>
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.zbjdl.boss.admin.department" extends="employee-default"
+		namespace="/depart">
+		<action name="departMentMgr"
+			class="com.zbjdl.boss.admin.department.action.DepartMentManagerAction">
+			<result name="success">/WEB-INF/pages/department/department_mgr.jsp
+			</result>
+		</action>
+
+		<action name="init"
+			class="com.zbjdl.boss.admin.department.action.EditDepartmentAction"
+			method="init">
+			<result>/WEB-INF/pages/department/editDepartment.jsp</result>
+		</action>
+
+		<action name="update"
+			class="com.zbjdl.boss.admin.department.action.EditDepartmentAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="add"
+			class="com.zbjdl.boss.admin.department.action.EditDepartmentAction"
+			method="add">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="delete"
+			class="com.zbjdl.boss.admin.department.action.EditDepartmentAction"
+			method="delete">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="migrate"
+			class="com.zbjdl.boss.admin.department.action.MigrateDepartmentAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="validateDeptNameUnique"
+			class="com.zbjdl.boss.admin.department.action.EditDepartmentAction"
+			method="validateDeptNameUnique">
+			<result type="json" />
+		</action>
+
+		<action name="validateDeptNameAndCodeUnique"
+			class="com.zbjdl.boss.admin.department.action.EditDepartmentAction"
+			method="validateDeptNameAndCodeUnique">
+			<result type="json" />
+		</action>
+	</package>
+</struts>

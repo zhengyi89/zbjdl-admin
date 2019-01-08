@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="departmentConvert"
+        class="com.zbjdl.boss.admin.user.convert.impl.DepartmentConvert" />
+    <bean id="userConvert" class="com.zbjdl.boss.admin.user.convert.impl.UserConvert" />
+    <bean id="functionConvert"
+        class="com.zbjdl.boss.admin.function.convert.impl.FunctionConvert" />
+    <bean id="menuConvert"
+        class="com.zbjdl.boss.admin.function.convert.impl.MenuConvert" />
+    <bean id="roleConvert"
+        class="com.zbjdl.boss.admin.authority.convert.impl.RoleConvert" />
+
+    <bean id="operationLogTemplateConvert"
+        class="com.zbjdl.boss.admin.operationlog.convert.impl.OperationLogTemplateConvert" />
+    <bean id="workItemConvert"
+        class="com.zbjdl.boss.admin.workitem.convert.impl.WorkItemConvert" />
+    <bean id="workItemTemplateConvert"
+        class="com.zbjdl.boss.admin.workitem.convert.impl.WorkItemTemplateConvert" />
+    <bean id="exclusiveFunctionConvert"
+        class="com.zbjdl.boss.admin.function.convert.impl.ExclusiveFunctionConvert" />
+    <bean id="portalMenuConvert"
+        class="com.zbjdl.boss.admin.function.convert.impl.PortalMenuConvert" />
+
+
+
+	<bean id="departmentService"
+		class="com.zbjdl.boss.admin.user.service.impl.DepartmentServiceImpl">
+		<property name="departmentDao" ref="departmentDao" />
+		<property name="departmentConvert" ref="departmentConvert" />
+	</bean>
+	<bean id="userService"
+		class="com.zbjdl.boss.admin.user.service.impl.UserServiceImpl">
+		<property name="userDao" ref="userDao" />
+		<property name="userStatusUpdateRecordDao" ref="userStatusUpdateRecordDao" />
+		<property name="userConvert" ref="userConvert" />
+	</bean>
+
+	<bean id="functionService"
+		class="com.zbjdl.boss.admin.function.service.impl.FunctionServiceImpl">
+		<property name="functionDao" ref="functionDao" />
+		<property name="functionConvert" ref="functionConvert" />
+		<property name="exclusiveFunctionDao" ref="exclusiveFunctionDao" />
+		<property name="exclusiveFunctionConvert" ref="exclusiveFunctionConvert" />
+	</bean>
+	
+
+	<bean id="menuService"
+		class="com.zbjdl.boss.admin.function.service.impl.MenuServiceImpl">
+		<property name="menuDao" ref="menuDao" />
+		<property name="menuConvert" ref="menuConvert" />
+	</bean>
+	
+	<bean id="roleService" 
+		class="com.zbjdl.boss.admin.authority.service.impl.RoleServiceImpl">
+		<property name="roleDao" ref="roleDao"/>
+		<property name="roleConvert" ref="roleConvert" />
+	</bean>
+	
+	<bean id="userAndRoleRelationService" 
+		class="com.zbjdl.boss.admin.authority.service.impl.UserAndRoleRelationServiceImpl">
+		<property name="userAndRoleRelationDao" ref="userAndRoleRelationDao"/>
+	</bean>
+	
+	<bean id="roleAndFunctionRelationService" 
+		class="com.zbjdl.boss.admin.authority.service.impl.RoleAndFunctionRelationServiceImpl">
+		<property name="roleAndFunctionRelationDao" ref="roleAndFunctionRelationDao"/>
+	</bean>
+	
+	<bean id="departmentAndFunctionRelationService" 
+		class="com.zbjdl.boss.admin.function.service.impl.DepartmentAndFunctionRelationServiceImpl">
+		<property name="departmentAndFunctionRelationDao" ref="departmentAndFunctionRelationDao"/>
+	</bean>
+	
+	<bean id="functionDependenceService" 
+		class="com.zbjdl.boss.admin.function.service.impl.FunctionDependenceServiceImpl">
+		<property name="functionDependenceDao" ref="functionDependenceDao"/>
+	</bean>
+	
+	<bean id="workItemService" 
+		class="com.zbjdl.boss.admin.workitem.service.impl.WorkItemServiceImpl">
+		<property name="workItemDao" ref="workItemDao"/>
+		<property name="workItemTemplateDao" ref="workItemTemplateDao"/>
+		<property name="workItemConvert" ref="workItemConvert" />
+		<property name="workItemTemplateConvert" ref="workItemTemplateConvert" />
+	</bean>
+	
+	<bean id="upgradeNoticeService"
+		class="com.zbjdl.boss.admin.notice.service.impl.UpgradeNoticeServiceImpl">
+	</bean>
+	
+	<bean id="portalMenuService" class="com.zbjdl.boss.admin.function.service.impl.PortalMenuServiceImpl"/>
+	
+</beans>

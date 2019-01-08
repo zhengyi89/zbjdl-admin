@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.WorkItemTemplateDao">
+	<resultMap type="WorkItemTemplate" id="WorkItemTemplateResultMap">
+		<id property="templateId" column="templateId" javaType="java.lang.Long"/>
+		<result property="functionId" column="functionId" javaType="java.lang.Long"/>
+		<result property="content" column="content" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="templateId"
+		parameterType="WorkItemTemplate">
+		insert into TBL_WORKITEMTEMPLATE
+		(
+			functionId,content
+		)
+		values
+		(
+			#{functionId,jdbcType=BIGINT},
+			#{content,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<select id="findAll" resultMap="WorkItemTemplateResultMap">
+		select * from TBL_WORKITEMTEMPLATE order by templateId
+
+	</select>
+
+	<select id="selectById" parameterType="java.lang.Long" resultMap="WorkItemTemplateResultMap">
+		select * from TBL_WORKITEMTEMPLATE where templateId = #{value}
+
+	</select>
+
+	<select id="query" parameterType="WorkItemTemplate" resultMap="WorkItemTemplateResultMap">
+		select * from TBL_WORKITEMTEMPLATE where 1=1
+		<if test="templateId != null"> and templateId = #{templateId,jdbcType=BIGINT}</if>
+		<if test="functionId != null"> and functionId = #{functionId,jdbcType=BIGINT}</if>
+		<if test="content != null"> and content = #{content,jdbcType=VARCHAR}</if>
+		order by templateId
+
+	</select>
+
+	<select id="queryTemplateByFunctionId" parameterType="long" resultMap="WorkItemTemplateResultMap">
+		select * from TBL_WORKITEMTEMPLATE where functionId = #{value}
+
+	</select>
+
+	<update id="update" parameterType="WorkItemTemplate">
+		update TBL_WORKITEMTEMPLATE
+		<set>
+		<if test="functionId != null">functionId = #{functionId,jdbcType=BIGINT},</if>
+		<if test="content != null">content = #{content,jdbcType=VARCHAR}</if>
+		</set>
+		where templateId = #{templateId}
+	</update>
+
+	<delete id="deleteByTemplateId" parameterType="long">
+		delete from TBL_WORKITEMTEMPLATE where templateId = #{templateId}
+	</delete>
+
+</mapper>

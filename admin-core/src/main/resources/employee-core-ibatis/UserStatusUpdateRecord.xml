@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.UserStatusUpdateRecordDao">
+
+	<resultMap id="UserStatusUpdateRecordResultMap" type="UserStatusUpdateRecord" >
+		<id property="recordId" column="recordId" javaType="java.lang.Long" />
+		<result property="userId" column="userId" javaType="java.lang.Long" />
+		<result property="preStatus" column="preStatus" jdbcType="VARCHAR"
+			javaType="com.zbjdl.boss.admin.user.enums.UserStatusEnum" />
+		<result property="currentStatus" column="currentStatus" jdbcType="VARCHAR"
+			javaType="com.zbjdl.boss.admin.user.enums.UserStatusEnum" />
+		<result property="adminUserId" column="adminUserId" javaType="java.lang.Long" />
+		<result property="updateReason" column="updateReason" jdbcType="VARCHAR" />
+		<result property="updateDate" column="update_DATE" javaType="java.util.Date" typeHandler="com.zbjdl.common.respository.mybatis.DateTimeMergeTypeHandler" />
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="recordId"
+		parameterType="UserStatusUpdateRecord">
+		insert into TBL_USERSTATUSUPDATERECORD
+		(
+			userId, preStatus, currentStatus, adminUserId, updateReason,update_date,update_time
+		)
+		values
+		(
+			#{userId,jdbcType=BIGINT},
+			#{preStatus,jdbcType=VARCHAR,javaType=com.zbjdl.boss.admin.user.enums.UserStatusEnum},
+			#{currentStatus,jdbcType=VARCHAR,javaType=com.zbjdl.boss.admin.user.enums.UserStatusEnum},
+			#{adminUserId,jdbcType=BIGINT},
+			#{updateReason,jdbcType=VARCHAR},
+			#{updateDate,jdbcType=DATE},
+			#{updateDate,jdbcType=TIME}
+		)
+	</insert>
+	
+	<select id="selectById" parameterType="long" resultMap="UserStatusUpdateRecordResultMap">
+		select * from TBL_USERSTATUSUPDATERECORD WHERE recordId = #{value}
+		 
+	</select>
+	
+	<select id="query" parameterType="map" resultMap="UserStatusUpdateRecordResultMap">
+		select * from TBL_USERSTATUSUPDATERECORD WHERE 1 = 1
+		<if test="recordId != null">
+				and recordId=#{recordId}
+		</if>
+		<if test="userId != null">
+				and userId=#{userId}
+		</if>
+		<if test="preStatus != null">
+				and preStatus=#{preStatus}
+		</if>
+		<if test="currentStatus != null">
+				and currentStatus=#{currentStatus}
+		</if>
+		<if test="adminUserId != null">
+				and adminUserId=#{adminUserId}
+		</if>
+		<if test="beginDate != null">
+			<![CDATA[ 
+				and update_date >= #{updateDate}
+			]]>
+		</if>
+		<if test="endDate != null">
+			<![CDATA[ 
+				and update_date <= #{updateDate}
+			]]>
+		</if>
+		 
+	</select>
+	
+	<select id="findAll" resultMap="UserStatusUpdateRecordResultMap">
+		select * from TBL_USERSTATUSUPDATERECORD ORDER BY recordId
+		 
+	</select>
+	
+	<delete id="delete" parameterType="long">
+		delete from TBL_USERSTATUSUPDATERECORD WHERE recordId =#{value}
+	</delete>
+
+</mapper>

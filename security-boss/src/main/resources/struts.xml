@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.freemarker.templatesCache" value="true"/>
+	<package name="employee-default" extends="json-default">
+		<interceptors>
+			<interceptor name="paramInterceptor" class="com.zbjdl.boss.admin.frame.interceptor.ParametersInterceptor"/>
+			<interceptor name="ssoInterceptor" class="com.zbjdl.boss.admin.frame.interceptor.SSOInterceptor" />
+			<interceptor name="menuInterceptor" class="com.zbjdl.boss.admin.frame.interceptor.MenuInterceptor"/>
+			<interceptor name="operationLogInterceptor" class="com.zbjdl.boss.admin.frame.interceptor.OperationLogInterceptor" />
+			<interceptor name="authorityInterceptor" class="com.zbjdl.boss.admin.frame.interceptor.AuthorityInterceptor" />
+			<interceptor name="auditInterceptor" class="com.zbjdl.boss.admin.frame.interceptor.AuditInterceptor" />
+			<interceptor name="exceptionInterceptor" class="com.zbjdl.boss.admin.frame.interceptor.ExceptionInterceptor" />
+			<interceptor-stack name="employeeInterceptorStack">
+				<interceptor-ref name="paramInterceptor"/>
+				<interceptor-ref name="exceptionInterceptor" />
+				<interceptor-ref name="ssoInterceptor" />
+				<interceptor-ref name="menuInterceptor" />
+				<interceptor-ref name="operationLogInterceptor" />
+				<interceptor-ref name="authorityInterceptor" />
+				<interceptor-ref name="auditInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="employeeInterceptorStack" />
+	</package>
+	<package name="default" extends="struts-default">
+		<default-action-ref name="notFound" />
+		<action name="notFound">
+			<result>/WEB-INF/pages/main/404.jsp</result>
+		</action>
+	</package>
+
+	<include file="employee-boss-struts/struts-menu.xml" />
+	<include file="employee-boss-struts/struts-login.xml" />
+	<include file="employee-boss-struts/struts-function.xml" />
+	<include file="employee-boss-struts/struts-department.xml" />
+	<include file="employee-boss-struts/struts-role.xml" />
+	<include file="employee-boss-struts/struts-user.xml" />
+	<include file="employee-boss-struts/struts-log.xml" />
+	<include file="employee-boss-struts/struts-workitem.xml" />
+	<include file="employee-boss-struts/struts-template.xml" />
+	<include file="employee-boss-struts/struts-notice.xml" />
+	<include file="employee-boss-struts/struts-portal.xml" />
+</struts>
+

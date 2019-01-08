@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.UpgradeNoticeHideDao">
+	<resultMap type="UpgradeNoticeHide" id="UpgradeNoticeHideResultMap">
+		<id property="id" column="ID" javaType="java.lang.Long"/>
+		<result property="userId" column="USERID"/>
+		<result property="noticeId" column="NOTICEID"/>
+	</resultMap>
+	
+	<insert id="save" useGeneratedKeys="true" keyProperty="id"
+		parameterType="UpgradeNoticeHide">
+		INSERT INTO TBL_UPGRADE_NOTICE_HIDE
+		(
+			USERID,
+			NOTICEID
+		)
+		VALUES
+		(
+			#{userId,jdbcType=BIGINT},
+			#{noticeId,jdbcType=BIGINT}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="long">
+		DELETE FROM TBL_UPGRADE_NOTICE_HIDE WHERE ID = #{id}
+	</delete>
+
+	<delete id="deleteByUser" parameterType="map">
+		DELETE FROM TBL_UPGRADE_NOTICE_HIDE 
+		WHERE
+			USERID = #{userId,jdbcType=BIGINT}
+		AND NOTICEID = #{noticeId,jdbcType=BIGINT}
+	</delete>
+
+	<select id="checkExist" resultMap="UpgradeNoticeHideResultMap" parameterType="UpgradeNoticeHide">
+		SELECT * FROM 
+			TBL_UPGRADE_NOTICE_HIDE
+		WHERE
+			USERID = #{userId,jdbcType=BIGINT}
+		AND NOTICEID = #{noticeId,jdbcType=BIGINT}
+		 
+	</select>
+</mapper>

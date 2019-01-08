@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.zbjdl.boss.admin.role" extends="employee-default"
+		namespace="/role">
+		<action name="init" class="com.zbjdl.boss.admin.role.action.EditRoleAction" method="init">
+			<result>/WEB-INF/pages/role/editRole.jsp</result>
+		</action>
+		
+		<action name="add" class="com.zbjdl.boss.admin.role.action.EditRoleAction" method="add">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		
+		<action name="delete" class="com.zbjdl.boss.admin.role.action.EditRoleAction" method="delete">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		
+		<action name="activate" class="com.zbjdl.boss.admin.role.action.EditRoleAction" method="activate">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		
+		<action name="freeze" class="com.zbjdl.boss.admin.role.action.EditRoleAction" method="freeze">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		
+		<action name="update" class="com.zbjdl.boss.admin.role.action.EditRoleAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		
+		<action name="validateRoleNameUnique" class="com.zbjdl.boss.admin.role.action.EditRoleAction" method="validateRoleNameUnique">
+			<result type="json" />
+		</action>
+		
+		<action name="roleMgr" class="com.zbjdl.boss.admin.role.action.RoleManagerAction">
+			<result name="success">/WEB-INF/pages/role/role_mgr.jsp</result>
+		</action>
+		
+		<action name="roleDetail" class="com.zbjdl.boss.admin.role.action.RoleDetailAction">
+			<result name="success">/WEB-INF/pages/role/roleInfo_detail.jsp</result>
+		</action>
+		
+		<!--显示角色的所有关联用户信息  -->
+		<action name="showUserForRole" class="com.zbjdl.boss.admin.role.action.ShowRoleUserRelationAction">
+			<result name="success">/WEB-INF/pages/role/userForRole.jsp</result>
+		</action>
+	</package>
+</struts>

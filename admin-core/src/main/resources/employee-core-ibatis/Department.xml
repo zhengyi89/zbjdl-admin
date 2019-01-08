@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.DepartmentDao">
+	<resultMap type="Department" id="DepartmentResultMap">
+		<id property="departmentId" column="DEPARTMENTID" javaType="java.lang.Long"/>
+		<result property="departmentCode" column="departmentcode"/>
+		<result property="departmentName" column="departmentname"/>
+		<result property="departmentDesc" column="departmentdesc"/>
+		<result property="isPortal" column="isPortal" javaType="boolean"/>
+		<result property="departmentStatus" column="departmentstatus" jdbcType="VARCHAR"
+			javaType="com.zbjdl.boss.admin.user.enums.DepartmentStatusEnum"/>
+		<collection property="userList" ofType="User"  select="com.zbjdl.boss.admin.repository.UserDao.queryByDepartmentId" column="DEPARTMENTID">
+		</collection>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="departmentId"
+		parameterType="Department">
+		INSERT INTO TBL_DEPARTMENT
+		(
+			departmentcode,departmentname,departmentDesc,departmentstatus,isPortal
+		)
+		VALUES
+		(
+			#{departmentCode,jdbcType=VARCHAR},
+			#{departmentName,jdbcType=VARCHAR},
+			#{departmentDesc,jdbcType=VARCHAR},
+			#{departmentStatus,jdbcType=VARCHAR},
+			#{isPortal,jdbcType=SMALLINT}
+		)
+	</insert>
+
+	<select id="queryUserByDepartmentId" parameterType="long" resultType="long">
+		SELECT userId FROM TBL_USER WHERE PRIMARYDEPARTMENTID = #{departmentId}
+
+	</select>
+
+	<select id="queryByUserId" parameterType="java.lang.Long" resultMap="DepartmentResultMap">
+		SELECT d.* FROM TBL_DEPARTMENT d
+			INNER JOIN TBL_USER u ON u.primaryDepartmentId=d.departmentId and u.userId = #{userId}
+	</select>
+
+	<select id="findAll" resultMap="DepartmentResultMap">
+		SELECT * FROM TBL_DEPARTMENT ORDER BY departmentId
+
+	</select>
+
+	<select id="selectById" parameterType="java.lang.Long" resultMap="DepartmentResultMap">
+		SELECT * FROM TBL_DEPARTMENT WHERE departmentId=#{value}
+
+	</select>
+
+	<select id="findList" parameterType="Department" resultMap="DepartmentResultMap">
+		select * from TBL_DEPARTMENT where 1=1
+		<if test="departmentCode != null"> and departmentCode = #{departmentCode,jdbcType=VARCHAR}</if>
+		<if test="departmentName != null"> and departmentName = #{departmentName,jdbcType=VARCHAR}</if>
+		<if test="departmentDesc != null"> and departmentDesc = #{departmentDesc,jdbcType=VARCHAR}</if>
+		<if test="departmentStatus != null"> and departmentStatus = #{departmentStatus,jdbcType=VARCHAR}</if>
+
+	</select>
+
+	<select id="queryDeparmentByFunctionId" parameterType="java.lang.Long" resultMap="DepartmentResultMap">
+		SELECT * FROM TBL_DEPARTMENT d
+			INNER JOIN TBL_DEPARTMENTANDFUNCTIONRELATION df
+				ON df.functionid = #{functionId} AND d.departmentId = df.departmentId
+
+	</select>
+
+	<update id="update" parameterType="Department">
+		update TBL_DEPARTMENT as d
+		<set>
+		<if test="departmentName != null">d.departmentName = #{departmentName,jdbcType=VARCHAR},</if>
+		<if test="departmentDesc != null">d.departmentDesc = #{departmentDesc,jdbcType=VARCHAR},</if>
+		<if test="departmentStatus != null">d.departmentStatus = #{departmentStatus,jdbcType=VARCHAR},</if>
+		<if test="isPortal != null">d.isPortal = #{isPortal,jdbcType=SMALLINT},</if>
+		</set>
+		where d.DEPARTMENTID = #{departmentId}
+	</update>
+
+	<delete id="delete" parameterType="long">
+		DELETE FROM TBL_DEPARTMENT WHERE departmentId = #{departmentId}
+	</delete>
+
+</mapper>

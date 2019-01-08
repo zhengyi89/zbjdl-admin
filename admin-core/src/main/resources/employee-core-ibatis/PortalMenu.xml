@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.PortalMenuDao">
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="menuId"
+		parameterType="PortalMenu">
+		INSERT INTO TBL_PORTAL_MENU
+		(
+		MENUNAME,FUNCTIONID,FUNCTIONURL,DEPARTMENTID,SEQUENCE,PARENTID,LEVELNUM,ICONNAME
+		)
+		VALUES
+		(
+		#{menuName,jdbcType=VARCHAR},
+		#{functionId,jdbcType=BIGINT},
+		#{functionUrl,jdbcType=VARCHAR},
+		#{departmentId,jdbcType=BIGINT},
+		#{sequence,jdbcType=INTEGER},
+		#{parentId,jdbcType=BIGINT},
+		#{levelNum,jdbcType=INTEGER},
+		#{iconName,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="batchSave" parameterType="PortalMenu">
+		INSERT INTO TBL_PORTAL_MENU
+		(
+		MENUNAME,FUNCTIONID,FUNCTIONURL,DEPARTMENTID,SEQUENCE,PARENTID,LEVELNUM,ICONNAME
+		)
+		VALUES
+		(
+		#{menuName,jdbcType=VARCHAR},
+		#{functionId,jdbcType=BIGINT},
+		#{functionUrl,jdbcType=VARCHAR},
+		#{departmentId,jdbcType=BIGINT},
+		#{sequence,jdbcType=INTEGER},
+		#{parentId,jdbcType=BIGINT},
+		#{levelNum,jdbcType=INTEGER},
+		#{iconName,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="long">
+		DELETE FROM TBL_PORTAL_MENU WHERE MENUID = #{menuId}
+	</delete>
+
+	<update id="update" parameterType="PortalMenu">
+		UPDATE TBL_PORTAL_MENU
+		<set>
+			<if test="menuName != null">MENUNAME = #{menuName},</if>
+			<if test="functionId != null">FUNCTIONID = #{functionId},</if>
+			<if test="functionUrl != null">FUNCTIONURL = #{functionUrl},</if>
+			<if test="departmentId != null">DEPARTMENTID = #{departmentId},</if>
+			<if test="sequence != null">SEQUENCE = #{sequence},</if>
+			<if test="parentId != null">PARENTID = #{parentId},</if>
+			<if test="levelNum != null">LEVELNUM = #{levelNum},</if>
+			<if test="iconName != null">ICONNAME = #{iconName},</if>
+		</set>
+		WHERE MENUID = #{menuId}
+	</update>
+
+	<select id="query" parameterType="PortalMenu" resultType="PortalMenu">
+		SELECT * FROM TBL_PORTAL_MENU
+		<where>
+			<if test="menuName != null">AND MENUNAME = #{menuName},</if>
+			<if test="functionId != null">AND FUNCTIONID = #{functionId},</if>
+			<if test="functionUrl != null">AND FUNCTIONURL = #{functionUrl},</if>
+			<if test="departmentId != null">AND DEPARTMENTID = #{departmentId},</if>
+			<if test="sequence != null">AND SEQUENCE = #{sequence},</if>
+			<if test="parentId != null">AND PARENTID = #{parentId},</if>
+			<if test="levelNum != null">AND LEVELNUM = #{levelNum},</if>
+			<if test="iconName != null">AND ICONNAME = #{iconName},</if>
+			<if test="menuId != null">AND MENUID = #{menuId}</if>
+		</where>
+		ORDER BY LEVELNUM ASC, SEQUENCE ASC
+		 
+	</select>
+
+	<select id="selectById" parameterType="long" resultType="PortalMenu">
+		SELECT * FROM TBL_PORTAL_MENU WHERE MENUID = #{menuId}
+		 
+	</select>
+
+	<select id="findAll" resultType="PortalMenu">
+		SELECT * FROM TBL_PORTAL_MENU WHERE MENUID != -1 ORDER BY LEVELNUM ASC, SEQUENCE ASC
+		 
+	</select>
+	
+	<select id="queryMenusByDepartment" parameterType="Long" resultType="PortalMenu">
+		SELECT * FROM TBL_PORTAL_MENU
+        WHERE DEPARTMENTID = #{departmentId} OR MENUID = -1
+		ORDER BY LEVELNUM ASC, SEQUENCE ASC, MENUID ASC
+		 
+	</select>
+
+    <select id="queryMenusKVByDepartment" parameterType="Long" resultType="PortalMenu">
+        SELECT MENUID,MENUNAME FROM TBL_PORTAL_MENU
+        <if test="departmentId != null and departmentId != 0">
+	        WHERE MENUID = -1 OR DEPARTMENTID = #{departmentId}
+        </if>
+        ORDER BY LEVELNUM ASC, SEQUENCE ASC, MENUID ASC
+         
+    </select>
+
+	<select id="queryMenusByIdList" parameterType="list" resultType="PortalMenu">
+		SELECT * FROM TBL_PORTAL_MENU WHERE MENUID IN
+		<foreach collection="menuIds" item="menuId" open="(" separator="," close=")">
+			#{menuId}
+		</foreach>
+		 
+	</select>
+
+	<select id="queryMenusByParentId" parameterType="long" resultType="PortalMenu">
+		SELECT * FROM TBL_PORTAL_MENU WHERE PARENTID = #{parentId}
+		 
+	</select>
+	
+	<select id="queryMaxSequenceByParentId" parameterType="long" resultType="int">
+		SELECT MAX(SEQUENCE) FROM TBL_PORTAL_MENU WHERE PARENTID = #{parentId}
+		 
+	</select>
+	
+	<delete id="deleteMenus" parameterType="map">
+		DELETE FROM TBL_PORTAL_MENU
+		WHERE MENUID IN
+		<foreach collection="menuIds" item="menuId" open="(" separator="," close=")">
+			#{menuId}
+		</foreach>
+	</delete>
+	<delete id="deleteDepartmentMenu" parameterType="long">
+		DELETE FROM TBL_PORTAL_MENU
+		WHERE MENUID != -1 AND DEPARTMENTID = #{departmentId}
+	</delete>
+</mapper>

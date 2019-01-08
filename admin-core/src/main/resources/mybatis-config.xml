@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+    <settings>
+        <!-- 全局的映射器启用或禁用缓存。 -->
+        <setting name="cacheEnabled" value="true" />
+        <!-- 全局启用或禁用延迟加载 -->
+        <setting name="lazyLoadingEnabled" value="true" />
+        <!-- 允许或不允许多种结果集从一个单独的语句中返回 -->
+        <setting name="multipleResultSetsEnabled" value="true" />
+        <!-- 使用列标签代替列名 -->
+        <setting name="useColumnLabel" value="true" />
+        <!-- 允许JDBC支持生成的键 -->
+        <setting name="useGeneratedKeys" value="false" />
+        <!-- 配置默认的执行器 -->
+        <setting name="defaultExecutorType" value="SIMPLE" />
+        <!-- 设置超时时间 -->
+        <setting name="defaultStatementTimeout" value="25000" />
+    </settings>
+
+
+	<typeAliases>
+		<typeAlias alias="Department" type="com.zbjdl.boss.admin.user.entity.DepartmentEntity" />
+		<typeAlias alias="User" type="com.zbjdl.boss.admin.user.entity.UserEntity" />
+		<typeAlias alias="UserStatusUpdateRecord" type="com.zbjdl.boss.admin.user.entity.UserStatusUpdateRecordEntity" />
+		<typeAlias alias="Role" type="com.zbjdl.boss.admin.authority.entity.RoleEntity"/>
+		<typeAlias alias="RoleAndFunctionRelation" type="com.zbjdl.boss.admin.authority.entity.RoleAndFunctionRelationEntity"/>
+		<typeAlias alias="UserAndRoleRelation" type="com.zbjdl.boss.admin.authority.entity.UserAndRoleRelationEntity"/>
+		<typeAlias alias="Function" type="com.zbjdl.boss.admin.function.entity.FunctionEntity"/>
+		<typeAlias alias="Menu" type="com.zbjdl.boss.admin.function.entity.MenuEntity"/>
+		<typeAlias alias="PortalMenu" type="com.zbjdl.boss.admin.function.entity.PortalMenu"/>
+		<typeAlias alias="DepartmentAndFunctionRelation" type="com.zbjdl.boss.admin.function.entity.DepartmentAndFunctionRelationEntity"/>
+		<typeAlias alias="OperationLog" type="com.zbjdl.boss.admin.operationlog.entity.OperationLogEntity"/>
+		<typeAlias alias="OperationLogTemplate" type="com.zbjdl.boss.admin.operationlog.entity.OperationLogTemplateEntity"/>
+		<typeAlias alias="WorkItem" type="com.zbjdl.boss.admin.workitem.entity.WorkItemEntity" />
+		<typeAlias alias="WorkItemTemplate" type="com.zbjdl.boss.admin.workitem.entity.WorkItemTemplateEntity"/>
+		<typeAlias alias="ExclusiveFunction" type="com.zbjdl.boss.admin.function.entity.ExclusiveFunctionEntity" />
+		<typeAlias alias="FunctionDependence" type="com.zbjdl.boss.admin.function.entity.FunctionDependenceEntity"/>
+		<typeAlias alias="UpgradeNotice" type="com.zbjdl.boss.admin.notice.entity.UpgradeNoticeEntity"/>
+		<typeAlias alias="UpgradeNoticeHide" type="com.zbjdl.boss.admin.notice.entity.UpgradeNoticeHideEntity"/>
+	</typeAliases>
+
+	<!-- handlers? -->
+	<mappers>
+		<mapper resource="employee-core-ibatis/Department.xml" />
+		<mapper resource="employee-core-ibatis/User.xml" />
+		<mapper resource="employee-core-ibatis/UserStatusUpdateRecord.xml" />
+		<mapper resource="employee-core-ibatis/Role.xml" />
+		<mapper resource="employee-core-ibatis/RoleAndFunction.xml" />
+		<mapper resource="employee-core-ibatis/UserAndRole.xml" />
+		<mapper resource="employee-core-ibatis/Function.xml" />
+		<mapper resource="employee-core-ibatis/Menu.xml" />
+		<mapper resource="employee-core-ibatis/PortalMenu.xml" />
+		<mapper resource="employee-core-ibatis/DepartmentAndFunction.xml" />
+		<mapper resource="employee-core-ibatis/OperationLog.xml" />
+		<mapper resource="employee-core-ibatis/OperationLogTemplate.xml" />
+		<mapper resource="employee-core-ibatis/WorkItem.xml" />
+		<mapper resource="employee-core-ibatis/WorkItemTemplate.xml" />
+		<mapper resource="employee-core-ibatis/ExclusiveFunction.xml" />
+		<mapper resource="employee-core-ibatis/FunctionDependence.xml" />
+		<mapper resource="employee-core-ibatis/UpgradeNotice.xml" />
+		<mapper resource="employee-core-ibatis/UpgradeNoticeHide.xml" />
+	</mappers>
+</configuration>

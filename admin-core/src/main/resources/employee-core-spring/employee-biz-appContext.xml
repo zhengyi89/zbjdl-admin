@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="userBiz" class="com.zbjdl.boss.admin.user.biz.impl.UserBizImpl">
+		<property name="userService" ref="userService" />
+		<property name="departmentService" ref="departmentService" />
+	</bean>
+	
+	<bean id="operationLogBiz" class="com.zbjdl.boss.admin.operationlog.biz.impl.OperationLogBizImpl">
+		<property name="securityBiz" ref="securityBiz" />
+		<property name="operationLogDao" ref="operationLogDao" />
+		<property name="operationLogTemplateDao" ref="operationLogTemplateDao" />
+		<property name="operationLogTemplateConvert" ref="operationLogTemplateConvert" />
+	</bean>
+	
+	<bean id="workItemBiz" class="com.zbjdl.boss.admin.workitem.biz.impl.WorkItemBizImpl">
+		<property name="workItemService" ref="workItemService" />
+	</bean>
+	
+	<bean id="securityBiz"
+		class="com.zbjdl.boss.admin.security.biz.impl.SecurityBizImpl">
+		<property name="menuService" ref="menuService" />
+		<property name="functionService" ref="functionService" />
+		<property name="userAndRoleRelationService" ref="userAndRoleRelationService" />
+	</bean>	
+	
+	<bean id="securityConfigBiz"
+		class="com.zbjdl.boss.admin.security.biz.impl.SecurityConfigBizImpl">
+		<property name="functionService" ref="functionService" />
+		<property name="roleService" ref="roleService" />
+		<property name="departmentService" ref="departmentService" />
+		<property name="userAndRoleRelationService" ref="userAndRoleRelationService" />
+		<property name="roleAndFunctionRelationService" ref="roleAndFunctionRelationService" />
+		<property name="departmentAndFunctionRelationService" ref="departmentAndFunctionRelationService" />
+		<property name="functionDependenceService" ref="functionDependenceService" />
+		<property name="userService" ref="userService" />
+		<property name="menuService" ref="menuService" />
+	</bean>
+	
+	<!-- 缓存拦截器 -->
+<!-- 	<bean id="cacheInterceptor" class="com.zbjdl.common.utils.cache.config.CacheInterceptor" />
+	<bean id="cacheBizProxyCreator"
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="order" value="1"></property>
+		<property name="interceptorNames">
+			<list>
+				<value>cacheInterceptor</value>
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<value>securityBiz</value>
+				<value>securityConfigBiz</value>
+			</list>
+		</property>
+	</bean> -->
+</beans>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.UserAndRoleRelationDao">
+	<resultMap type="UserAndRoleRelation" id="UserAndRoleRelationResultMap">
+		<id property="id" column="id" javaType="java.lang.Long"/>
+		<result property="userId" column="userid" javaType="java.lang.Long"/>
+		<result property="roleId" column="roleid" javaType="java.lang.Long"/>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id"
+		parameterType="UserAndRoleRelation">
+		insert into TBL_UserAndRoleRelation
+		(
+			userId,roleId
+		)
+		values
+		(
+			#{userId,jdbcType=BIGINT},
+			#{roleId,jdbcType=BIGINT}
+		)
+	</insert>
+
+	<select id="selectById" parameterType="java.lang.Long" resultMap="UserAndRoleRelationResultMap">
+		select * from TBL_UserAndRoleRelation where id=#{value}
+
+	</select>
+
+	<select id="queryByUserId" parameterType="java.lang.Long" resultMap="UserAndRoleRelationResultMap">
+		select * from TBL_UserAndRoleRelation as ur where ur.userId = #{value}
+
+	</select>
+
+	<select id="queryByRoleId" parameterType="java.lang.Long" resultMap="UserAndRoleRelationResultMap">
+		select * from TBL_UserAndRoleRelation as ur where ur.roleId = #{value}
+
+	</select>
+
+	<select id="queryByRelation"  parameterType="UserAndRoleRelation" resultMap="UserAndRoleRelationResultMap">
+		select * from TBL_UserAndRoleRelation as ur where ur.roleId = #{roleId} and ur.userId = #{userId}
+
+	</select>
+
+	<delete id="deleteUserAndRoleRelation" parameterType="UserAndRoleRelation">
+		delete from TBL_UserAndRoleRelation where userId = #{userId} and roleId = #{roleId}
+	</delete>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from TBL_UserAndRoleRelation where ID = #{id}
+	</delete>
+</mapper>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title><sitemesh:write property='title'/></title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="mCustomScrollbar/jquery.mCustomScrollbar.css"/>
+    <sitemesh:write property='head'/>
+ 
+  </head>
+  <body>
+    <div class="content_logo"><img src="images/logo.png"/></div>
+    <div class="content_nav">
+      <a class="notice" alt="账户维护"><span class="glyphicon glyphicon-cog"></span><span class="badge count bg-success">4</span></a>
+      <a class="notice" alt="修改密码"><span class="glyphicon glyphicon-pencil"></span><span class="badge count bg-info">6</span></a>
+      <a class="notice" alt="最新公告"><span class="glyphicon glyphicon-tasks"></span><span class="badge count bg-warning">2</span></a>
+      <a class="notice" alt="常见问题"><span class="glyphicon glyphicon-fire"></span><span class="badge count bg-danger">10</span></a>
+      <a class="quit"><span class="glyphicon glyphicon-off"></span></a>
+      <div class="user">
+          <img class="photo" src="images/user.jpg">
+          <span class="name">yaowei</span>
+      </div>
+    </div>
+    <div id="content_1" class="content_menu">
+      <ul class="menu">
+        <li>
+          <a name="menu_parent"><span class="glyphicon glyphicon-home"></span><span class="content_blank_15"></span>首页</a>
+        </li>
+        <li>
+          <a name="menu_parent" class="active">
+            <span class="glyphicon glyphicon-equalizer"></span><span class="content_blank_15"></span>基础管理
+            <span class="glyphicon glyphicon-chevron-right arr_right"></span>
+          </a>
+          <ul class="menu_active">
+            <li><a class="selected">借款人管理</a></li>
+            <li><a href="02_合作方管理.html">合作方管理</a></li>
+            <li><a href="03_产品管理.html">产品管理</a></li>
+            <li><a href="">账户管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a name="menu_parent">
+            <span class="glyphicon glyphicon-credit-card"></span><span class="content_blank_15"></span>交易管理
+            <span class="glyphicon glyphicon-chevron-right arr_right"></span>
+          </a>
+          <ul class="menu_active display_none">
+            <li><a href="05_申请管理.html">申请管理</a></li>
+            <li><a href="06_授信管理.html">授信管理</a></li>
+            <li><a href="07_提款管理.html">提款管理</a></li>
+            <li><a href="08_放款管理.html">放款管理</a></li>
+            <li><a href="09_资金平台充值.html">资金平台充值</a></li>
+          </ul>
+        </li>
+        <li>
+          <a name="menu_parent"><span class="glyphicon glyphicon-list-alt"></span><span class="content_blank_15"></span>参数管理</a>
+        </li>
+        <li>
+          <a name="menu_parent">
+            <span class="glyphicon glyphicon-th-list"></span><span class="content_blank_15"></span>统计报表
+            <span class="glyphicon glyphicon-chevron-right arr_right"></span>
+          </a>
+          <ul class="menu_active display_none">
+            <li><a>业务汇总表</a></li>
+            <li><a>业务报表</a></li>
+            <li><a>合作方报表</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+        <sitemesh:write property='body'/>
+
+    <script type="text/javascript" src="js/jquery.1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/resetCommon.js"></script>
+    <script type="text/javascript" src="bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+  </body>
+</html>

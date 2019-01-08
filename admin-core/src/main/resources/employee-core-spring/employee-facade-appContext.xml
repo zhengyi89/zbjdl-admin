@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="userFacade"
+		class="com.zbjdl.boss.admin.user.facade.impl.UserFacadeImpl">
+		<property name="userBiz" ref="userBiz" />
+		<property name="securityBiz" ref="securityBiz" />
+		<property name="securityConfigBiz" ref="securityConfigBiz" />
+	</bean>
+	
+	<bean id="userLoginFacade"  class="com.zbjdl.boss.admin.sso.facade.UserLoginFacadeImpl">
+	</bean>
+	
+	<bean id="operationLogFacade" class="com.zbjdl.boss.admin.operationlog.facade.OperationLogFacadeImpl">
+		<property name="operationLogBiz" ref="operationLogBiz" />
+	</bean>
+	
+	<bean id="workItemFacade" class="com.zbjdl.boss.admin.workitem.facade.impl.WorkItemFacadeImpl">
+		<property name="workItemBiz" ref="workItemBiz" />
+		<property name="operationLogBiz" ref="operationLogBiz" />
+	</bean>
+	
+	<bean id="SecurityFacade"
+		class="com.zbjdl.boss.admin.security.facade.impl.SecurityFacadeImpl">
+		<property name="securityBiz" ref="securityBiz" />
+	</bean>
+	
+	<bean id="securityConfigFacade"
+		class="com.zbjdl.boss.admin.security.facade.impl.SecurityConfigFacadeImpl">
+		<property name="securityConfigBiz" ref="securityConfigBiz" />
+	</bean>
+	<bean id="upgradeNoticeFacade"
+		class="com.zbjdl.boss.admin.notice.facade.impl.UpgradeNoticeFacadeImpl">
+	</bean>
+	<bean id="portalMenuFacade"
+		class="com.zbjdl.boss.admin.biz.PortalMenuFacadeImpl">
+	</bean>
+
+</beans>

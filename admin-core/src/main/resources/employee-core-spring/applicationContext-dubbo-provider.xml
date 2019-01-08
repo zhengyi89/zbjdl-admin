@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<!-- 自动从注册中心发现监控服务 -->
+	<dubbo:monitor protocol="registry" />
+	<!-- 注册中心 -->
+	<dubbo:registry address="zookeeper://registry.bass.3g:12181" />
+	<!-- 服务协议 -->
+	<dubbo:protocol name="hessian" server="servlet"/>
+	<dubbo:protocol name="http" server="servlet"/>
+	<!-- 自动扫描并暴露服务 -->
+	<bean class="com.alibaba.dubbo.config.spring.exporter.ServicePackageExporter">
+		<property name="packageName" value="com.zbjdl.boss.admin.facade"/>
+	</bean>
+</beans>

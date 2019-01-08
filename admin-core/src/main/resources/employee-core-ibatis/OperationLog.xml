@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.OperationLogDao">
+	<resultMap type="OperationLog" id="OperationLogResultMap">
+		<id property="operationLogID" column="operationLogID" javaType="java.lang.Long"/>
+		<result property="logContent" column="logContent" jdbcType="VARCHAR"/>
+		<result property="keyWord" column="keyWord" jdbcType="VARCHAR"/>
+		<result property="logTime" column="log_DATE" javaType="java.util.Date" typeHandler="com.zbjdl.common.respository.mybatis.DateTimeMergeTypeHandler" />
+	</resultMap>
+	
+	<insert id="save" useGeneratedKeys="true" keyProperty="operationLogID"
+		parameterType="OperationLog">
+		insert into TBL_OPERATIONLOG
+		(
+			logContent,keyWord,log_DATE,log_TIME
+		)
+		values
+		(
+			#{logContent,jdbcType=VARCHAR},
+			#{keyWord,jdbcType=VARCHAR},
+			#{logTime,jdbcType=DATE},
+			#{logTime,jdbcType=TIME}
+		)
+	</insert>
+	
+	<select id="findAll" resultMap="OperationLogResultMap">
+		select * from TBL_OPERATIONLOG order by operationLogID
+		 
+	</select>
+	
+	<select id="selectById" parameterType="java.lang.Long" resultMap="OperationLogResultMap">
+		select * from TBL_OPERATIONLOG where operationLogID=#{value}
+		 
+	</select>
+	
+	<select id="query" parameterType="OperationLog" resultMap="OperationLogResultMap">
+		select * from TBL_OPERATIONLOG where 1=1
+		<if test="keyWord != null"> and keyWord = #{keyWord,jdbcType=VARCHAR}</if>
+		<if test="logTime != null"> and log_DATE = #{logTime,jdbcType=DATE}</if>
+		 
+	</select>
+
+</mapper>

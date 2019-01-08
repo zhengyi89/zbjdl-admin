@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>date example</title>
+		<link  href="../../css/ui-lightness/jquery-ui-1.8.13.custom.css"  type="text/css" rel="stylesheet"></link>
+		<link  href="jquery-ui-timepicker-addon.css"  type="text/css" rel="stylesheet"></link>
+		<style type="text/css">
+			/*demo page css*/
+			body{ font: 85% "Trebuchet MS", sans-serif; margin: 50px;}
+		</style>
+		<script type="text/javascript" src="../../lib/jquery.min.js"></script>
+		<script type="text/javascript" src="../../lib/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="../../lib/jquery-ui-i18n.min.js"></script>
+		<script type="text/javascript" src="jquery-ui-timepicker-addon.js"></script>
+		<script type="text/javascript">
+		$(function(){
+			$('#example1').datepicker({showButtonPanel:true});
+			$('#example2').datetimepicker();
+			$('#example3').datetimepicker({showSecond: true, timeFormat: 'hh:mm:ss'});
+			$('#example4').timepicker({});
+			$("#example5").datepicker();
+			$("#date_format").change(function() {
+				$("#example5").datepicker("option", "dateFormat", $(this).val());
+			});
+			$("#example6").datepicker($.datepicker.regional["fr"]);
+			$("#locale").change(function() {
+				$("#example6").datepicker("option", $.datepicker.regional[$(this).val()]);
+			});
+
+			$("#example7").datepicker({
+				changeMonth: true,
+				changeYear: true
+			});
+			$("#example8").datepicker({
+				showOtherMonths: true,
+				selectOtherMonths: true
+			});
+			$( "#example9" ).datepicker({
+				showWeek: true,
+				firstDay: 1
+			});
+			$("#example10").datepicker({
+				numberOfMonths: 3,
+				showButtonPanel: true
+			});
+			$("#example11").datepicker({
+				showOn: "button",
+				buttonImage: "calendar.gif",
+				buttonImageOnly: true
+			});
+			var dates = $("#example12_start, #example12_end").datepicker({
+				defaultDate: "+1w",
+				changeMonth: true,
+				numberOfMonths: 3,
+				onSelect: function(selectedDate) {
+					var option = this.id == "example12_start" ? "minDate" : "maxDate",
+						instance = $(this).data("datepicker"),
+						date = $.datepicker.parseDate(
+							instance.settings.dateFormat ||
+							$.datepicker._defaults.dateFormat,
+							selectedDate, instance.settings );
+					dates.not(this).datepicker( "option", option, date );
+				}
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td>1.默认日期</td>
+				<td>
+					<input type="text" id="example1"/>
+				</td>
+			</tr>
+			<tr>
+				<td>2.默认日期时间(分)</td>
+				<td><input type="text" id="example2"/></td>
+			</tr>
+			<tr>
+				<td>3.默认日期时间(秒)</td>
+				<td><input type="text" id="example3"/></td>
+			</tr>
+			<tr>
+				<td>4.时间</td>
+				<td><input type="text" id="example4"/></td>
+			</tr>
+			<tr>
+				<td>5.格式化日期</td>
+				<td>
+					<input type="text" id="example5"/>
+					<select id="date_format">
+						<option value="yy-mm-dd">Default - yy-mm-dd</option>
+						<option value="mm/dd/yy">mm/dd/yy</option>
+						<option value="d M, y">d M, y</option>
+						<option value="d MM, y">d MM, y</option>
+						<option value="DD, d MM, yy">DD, d MM, yy</option>
+						<option value="'day' d 'of' MM 'in the year' yy">'day' d 'of' MM 'in the year' yy</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>6.国际化日期</td>
+				<td>
+					<input type="text" id="example6"/>
+					<select id="locale">
+						<option value="af">Afrikaans</option>
+						<option value="sq">Albanian (Gjuha shqipe)</option>
+						<option value="ar-DZ">Algerian Arabic</option>
+						<option value="ar">Arabic (‫(لعربي</option>
+						<option value="hy">Armenian (Հայերեն)</option>
+						<option value="az">Azerbaijani (Azərbaycan dili)</option>
+						<option value="eu">Basque (Euskara)</option>
+						<option value="bs">Bosnian (Bosanski)</option>
+						<option value="bg">Bulgarian (български език)</option>
+						<option value="ca">Catalan (Català)</option>
+						<option value="zh-HK">Chinese Hong Kong (繁體中文)</option>
+						<option value="zh-CN">Chinese Simplified (简体中文)</option>
+						<option value="zh-TW">Chinese Traditional (繁體中文)</option>
+						<option value="hr">Croatian (Hrvatski jezik)</option>
+						<option value="cs">Czech (čeština)</option>
+						<option value="da">Danish (Dansk)</option>
+						<option value="nl">Dutch (Nederlands)</option>
+						<option value="en-AU">English/Australia</option>
+						<option value="en-NZ">English/New Zealand</option>
+						<option value="en-GB">English/UK</option>
+						<option value="eo">Esperanto</option>
+						<option value="et">Estonian (eesti keel)</option>
+						<option value="fo">Faroese (føroyskt)</option>
+						<option value="fa">Farsi/Persian (‫(فارسی</option>
+						<option value="fi">Finnish (suomi)</option>
+						<option selected="selected" value="fr">French (Français)</option>
+						<option value="fr-CH">French/Swiss (Français de Suisse)</option>
+						<option value="gl">Galician</option>
+						<option value="de">German (Deutsch)</option>
+						<option value="el">Greek (Ελληνικά)</option>
+						<option value="he">Hebrew (‫(עברית</option>
+						<option value="hu">Hungarian (Magyar)</option>
+						<option value="is">Icelandic (Õslenska)</option>
+						<option value="id">Indonesian (Bahasa Indonesia)</option>
+						<option value="it">Italian (Italiano)</option>
+						<option value="ja">Japanese (日本語)</option>
+						<option value="ko">Korean (한국어)</option>
+						<option value="kz">Kazakhstan (Kazakh)</option>
+						<option value="lv">Latvian (Latvieöu Valoda)</option>
+						<option value="lt">Lithuanian (lietuviu kalba)</option>
+						<option value="ml">Malayalam</option>
+						<option value="ms">Malaysian (Bahasa Malaysia)</option>
+						<option value="no">Norwegian (Norsk)</option>
+						<option value="pl">Polish (Polski)</option>
+						<option value="pt">Portuguese (Português)</option>
+						<option value="pt-BR">Portuguese/Brazilian (Português)</option>
+						<option value="rm">Rhaeto-Romanic (Romansh)</option>
+						<option value="ro">Romanian (Română)</option>
+						<option value="ru">Russian (Русский)</option>
+						<option value="sr">Serbian (српски језик)</option>
+						<option value="sr-SR">Serbian (srpski jezik)</option>
+						<option value="sk">Slovak (Slovencina)</option>
+						<option value="sl">Slovenian (Slovenski Jezik)</option>
+						<option value="es">Spanish (Español)</option>
+						<option value="sv">Swedish (Svenska)</option>
+						<option value="ta">Tamil (தமிழ்)</option>
+						<option value="th">Thai (ภาษาไทย)</option>
+						<option value="tj">Tajikistan</option>
+						<option value="tr">Turkish (Türkçe)</option>
+						<option value="uk">Ukranian (Українська)</option>
+						<option value="vi">Vietnamese (Tiếng Việt)</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>7.可选择月&年</td>
+				<td><input type="text" id="example7"/></td>
+			</tr>
+			<tr>
+				<td>8.显示其它月</td>
+				<td><input type="text" id="example8"/></td>
+			</tr>
+			<tr>
+				<td>9.显示周</td>
+				<td><input type="text" id="example9"/></td>
+			</tr>
+			<tr>
+				<td>10.显示多月</td>
+				<td><input type="text" id="example10"/></td>
+			</tr>
+			<tr>
+				<td>11.图标选择</td>
+				<td><input type="text" id="example11"/></td>
+			</tr>
+			<tr>
+				<td>12.star-end</td>
+				<td><input type="text" id="example12_start"/> - <input type="text" id="example12_end"/></td>
+			</tr>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.zbjdl.boss.admin.user" extends="employee-default"
+		namespace="/user">
+		<action name="userMgr"
+			class="com.zbjdl.boss.admin.user.action.UserManagerAction"
+			method="queryUser">
+			<result name="success">/WEB-INF/pages/user/user_mgr.jsp</result>
+		</action>
+
+		<action name="setAdmin"
+			class="com.zbjdl.boss.admin.user.action.UserManagerAction"
+			method="setAdmin">
+			<result name="success" type="redirect">userMgr</result>
+		</action>
+
+		<action name="cancelAdmin"
+			class="com.zbjdl.boss.admin.user.action.UserManagerAction"
+			method="cancelAdmin">
+			<result name="success" type="redirect">userMgr</result>
+		</action>
+
+		<action name="activeUser"
+			class="com.zbjdl.boss.admin.user.action.UserManagerAction"
+			method="activeUser">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="frozenUser"
+			class="com.zbjdl.boss.admin.user.action.UserManagerAction"
+			method="frozenUser">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="deleteUser"
+			class="com.zbjdl.boss.admin.user.action.UserManagerAction"
+			method="deleteUser">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<!-- 操作员管理 -->
+		<action name="operatorMgr"
+			class="com.zbjdl.boss.admin.user.action.OperatorManagerAction"
+			method="execute">
+			<result name="success">/WEB-INF/pages/user/operator_mgr.jsp</result>
+		</action>
+
+		<!-- 添加操作员 -->
+		<action name="showAddOperator"
+			class="com.zbjdl.boss.admin.user.action.AddOperatorAction"
+			method="execute">
+			<result name="success">/WEB-INF/pages/user/addOperator.jsp</result>
+		</action>
+
+		<action name="addOperator"
+			class="com.zbjdl.boss.admin.user.action.AddOperatorAction"
+			method="addOperator">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg,userId</param>
+			</result>
+		</action>
+
+		<action name="activeOperator"
+			class="com.zbjdl.boss.admin.user.action.OperatorManagerAction"
+			method="activeOperator">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="frozenOperator"
+			class="com.zbjdl.boss.admin.user.action.OperatorManagerAction"
+			method="frozenOperator">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="deleteOperator"
+			class="com.zbjdl.boss.admin.user.action.OperatorManagerAction"
+			method="deleteOperator">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<!-- 操作员详情 -->
+		<action name="operatorInfoDetail"
+			class="com.zbjdl.boss.admin.user.action.OperatorInfoDetailAction"
+			method="execute">
+			<result name="success">/WEB-INF/pages/user/operatorInfo_detail.jsp
+			</result>
+		</action>
+
+		<!-- 操作员的角色 -->
+		<action name="queryOperatorRoles"
+			class="com.zbjdl.boss.admin.user.action.OperatorInfoDetailAction"
+			method="queryOperatorRoles">
+			<result name="success">/WEB-INF/pages/user/operator_role.jsp</result>
+		</action>
+
+		<!-- 用户详情 -->
+		<action name="userInfoDetail"
+			class="com.zbjdl.boss.admin.user.action.UserInfoDetailAction">
+			<result name="success">/WEB-INF/pages/user/userInfo_detail.jsp</result>
+		</action>
+
+		<!-- 添加管理员 -->
+		<action name="showaddAdmin"
+			class="com.zbjdl.boss.admin.user.action.AddDepartmentAdminAction"
+			method="execute">
+			<result name="success">/WEB-INF/pages/user/addAdmin.jsp</result>
+		</action>
+
+		<action name="addDepartmentAdmin"
+			class="com.zbjdl.boss.admin.user.action.AddDepartmentAdminAction"
+			method="addDepartmentAdmin">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<!-- 添加系统管理员 -->
+		<action name="showaddSysAdmin"
+			class="com.zbjdl.boss.admin.user.action.AddSysAdminAction"
+			method="execute">
+			<result name="success">/WEB-INF/pages/user/addSysAmin.jsp</result>
+		</action>
+
+		<action name="addSysAdmin"
+			class="com.zbjdl.boss.admin.user.action.AddSysAdminAction"
+			method="addSysAdmin">
+			<result name="success" type="redirect">userMgr</result>
+		</action>
+
+		<!-- 修改密码 -->
+		<action name="showModifyPwd"
+			class="com.zbjdl.boss.admin.user.action.ModifyPasswordAction"
+			method="execute">
+			<result name="success">/WEB-INF/pages/user/modifypwd.jsp</result>
+			<!-- 输出 Session 方便调试专用 -->
+			<result name="json" type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">sessionAttr.*</param>
+			</result>
+		</action>
+
+		<action name="modifyPwd"
+			class="com.zbjdl.boss.admin.user.action.ModifyPasswordAction"
+			method="modifyPwd">
+			<result type="json" />
+		</action>
+
+		<!-- 系管员签到变更 -->
+		<action name="showAlterSuperAdmin"
+			class="com.zbjdl.boss.admin.user.action.AlterSuperAdminAction"
+			method="execute">
+			<result name="success">/WEB-INF/pages/user/alterSuperAdmin.jsp</result>
+		</action>
+
+		<action name="alterSuperAdmin"
+			class="com.zbjdl.boss.admin.user.action.AlterSuperAdminAction"
+			method="alterSuperAdmin">
+			<result name="success">/WEB-INF/pages/user/alterSuperAdmin.jsp</result>
+		</action>
+
+		<!-- 重置用户密码 -->
+		<action name="reSetUserPassword"
+			class="com.zbjdl.boss.admin.user.action.ReSetPasswordAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<!-- 重置操作员密码 -->
+		<action name="reSetOperatorPassword"
+			class="com.zbjdl.boss.admin.user.action.ReSetPasswordAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<!-- 权限分配 -->
+		<action name="showAuthority"
+			class="com.zbjdl.boss.admin.user.action.AuthorityAction"
+			method="execute">
+			<result name="success">/WEB-INF/pages/user/showAuthority.jsp</result>
+		</action>
+
+		<action name="distributeAuthority"
+			class="com.zbjdl.boss.admin.user.action.AuthorityAction"
+			method="distributeAuthority">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<!-- ajax请求查询role对应function -->
+		<action name="ajaxQurryRole"
+			class="com.zbjdl.boss.admin.user.action.AuthorityAction"
+			method="ajaxQurryRole">
+			<result type="json" />
+		</action>
+
+		<!-- ajax请求快速勾选角色 -->
+		<action name="quickChoiseRoleAjax"
+			class="com.zbjdl.boss.admin.user.action.AuthorityAction"
+			method="quickChoiseRoleAjax">
+			<result type="json" />
+		</action>
+		<!-- 进入修改用户信息页面 -->
+		<action name="showUserInfoModify"
+			class="com.zbjdl.boss.admin.user.action.UserManagerAction"
+			method="showUserInfoModify">
+			<result name="success">/WEB-INF/pages/user/userInfoModify.jsp</result>
+		</action>
+		<!-- 修改用户信息 -->
+		<action name="modifyUserInfo"
+			class="com.zbjdl.boss.admin.user.action.UserManagerAction"
+			method="modifyUserInfo">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		<!-- 切换部门 -->
+		<action name="changeDepartment"
+			class="com.zbjdl.boss.admin.user.action.OperatorManagerAction"
+			method="changeDepartment">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		<!-- 人员超级管理 -->
+		<action name="operatorSuperManager"
+			class="com.zbjdl.boss.admin.user.action.OperatorManagerAction"
+			method="operatorSuperManager">
+			<result name="success">/WEB-INF/pages/user/operatorSuperManager.jsp
+			</result>
+		</action>
+		<!-- 切换部门 -->
+		<action name="changeDepartment"
+			class="com.zbjdl.boss.admin.user.action.OperatorManagerAction"
+			method="changeDepartment">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<!-- 根据部门编号查找操作员 -->
+		<action name="loadOperator" class="com.zbjdl.boss.admin.user.action.OperatorManagerAction" method="loadOperator">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+	</package>
+</struts>

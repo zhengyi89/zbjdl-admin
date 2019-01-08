@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.ExclusiveFunctionDao">
+
+	<resultMap type="ExclusiveFunction" id="ExclusiveFunctionResultMap">
+		<id property="id" column="ID" javaType="java.lang.Long" />
+		<result property="functionId" column="FUNCTIONID" javaType="java.lang.Long" />
+		<result property="exclusiveFunctionId" column="EXCLUSIVEFUNCTIONID" javaType="java.lang.Long" />
+	</resultMap>
+
+	<select id="query" parameterType="Function" resultMap="ExclusiveFunctionResultMap">
+		select * from TBL_EXCLUSIVEFUNCTION
+		<where>
+			<if test="functionId != null">and functionId = #{functionId}</if>
+			<if test="exclusiveFunctionId != null">and exclusiveFunctionId = #{exclusiveFunctionId}</if>
+		</where>
+		 
+	</select>
+
+	<select id="findAll" resultMap="ExclusiveFunctionResultMap">
+		select * from TBL_EXCLUSIVEFUNCTION
+		 
+	</select>
+
+</mapper>

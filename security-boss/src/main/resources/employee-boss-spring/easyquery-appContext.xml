@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="logQueryService" class="com.zbjdl.utils.query.impl.QueryServiceImpl">
+		<property name="dataSource" ref="logDataSource"/>
+		<property name="querys">
+			<map>
+				<!-- 操作日志查询 -->
+				<entry key="queryOperationLog">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select * from ADMIN_OPERATION_LOG el
+							where 1=1
+								/~LoginNames: and el.operator_Login_Name in ([LoginNames])~/
+								/~loginName: and el.operator_Login_Name = {loginName,String}~/
+								/~functionId: and el.function_Id = {functionId,long}~/
+								/~functionName: and el.function_Name LIKE CONCAT('%',{functionName},'%')~/
+								/~startTime: and el.operate_End_Time >= '[startTime,mintimestamp]'~/
+								/~endTime: and el.operate_End_Time <= '[endTime,maxtimestamp]'~/
+								/~operateContent: and el.operate_content LIKE CONCAT('%',{operateContent},'%')~/
+								/~keyword: and el.keyword LIKE CONCAT('%',{keyword},'%')~/
+							order by el.id desc
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+				<entry key="queryLogDetail">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							SELECT * FROM ADMIN_OPERATION_LOG
+							WHERE ID = {id}
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="queryService" class="com.zbjdl.utils.query.impl.QueryServiceImpl">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="querys">
+			<map>
+				<entry key="queryDepartment">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select
+								departmentId,departmentCode,departmentName,departmentDesc,departmentStatus,isPortal
+							from TBL_DEPARTMENT
+							where 1=1
+								/~departmentCode: and departmentCode = {departmentCode,String}~/
+								/~departmentName: and departmentName LIKE CONCAT('%',{departmentName},'%')~/
+								/~departmentDesc: and departmentDesc  LIKE CONCAT('%',{departmentDesc},'%')~/
+								/~departmentStatus: and departmentStatus = {departmentStatus,String}~/
+							order by departmentId desc
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+				<!-- 用户查询 -->
+				<entry key="queryUser">
+					<bean class="com.zbjdl.utils.query.Query">  <!-- /~isAdmin: and u.isAdmin = {isAdmin,String}~/ /~userStatus: and u.userStatus
+							= {userStatus,String}~/ -->
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select
+								u.userId,primaryDepartmentId,u.loginName,u.userStatus,u.userName,u.isAdmin,d.departmentName
+							from TBL_USER u left join TBL_DEPARTMENT d on u.primaryDepartmentId = d.departmentId
+							where 1=1
+								and u.userid > 0
+								/~userId: and u.userId != {userId,Long}~/
+								/~departmentCode: and d.departmentCode = {departmentCode,String}~/
+								/~loginName: and u.loginName  LIKE CONCAT('%',{loginName},'%')~/
+								/~userName: and u.userName  LIKE CONCAT('%',{userName},'%')~/
+								/~departmentStatus: and u.departmentStatus = {departmentStatus,String}~/
+								and exists(
+								select 1 from TBL_USERANDROLERELATION  uar where u.userId = uar.userId and uar.roleId in (-1001,-1000)
+								)
+							order by createTime desc
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<!-- 角色查询 -->   <!-- -->
+				<entry key="queryRole">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							SELECT
+								R.ROLEID,R.ROLENAME,R.ROLESTATUS,R.DESCRIPTION,R.ROLETYPE,R.DEPARTMENTID
+							FROM TBL_ROLE R
+							WHERE
+								R.ROLESTATUS != 'FORBID'
+								/~roleName: AND R.ROLENAME LIKE CONCAT('%',{roleName},'%')~/
+								/~roleStatus: AND R.ROLESTATUS = {roleStatus,String}~/
+								/~departmentId: AND R.DEPARTMENTID = {departmentId,Long} ~/
+								/~multiDept: AND EXISTS
+								(
+									SELECT * FROM
+									TBL_ROLEANDFUNCTIONRELATION RF
+									WHERE RF.ROLEID = R.ROLEID
+									AND RF.FUNCTIONID NOT IN (SELECT FUNCTIONID FROM TBL_DEPARTMENTANDFUNCTIONRELATION DF WHERE DF.DEPARTMENTID = R.DEPARTMENTID)
+								)
+								~/
+								/~functionName: AND EXISTS
+								(
+									SELECT 1 FROM
+									TBL_ROLEANDFUNCTIONRELATION RF ,TBL_FUNCTION F
+									WHERE
+									RF.FUNCTIONID = F.FUNCTIONID
+									AND R.ROLEID=RF.ROLEID
+									AND F.FUNCTIONNAME LIKE CONCAT('%',{functionName},'%') 
+								)
+								~/
+							ORDER BY ROLEID DESC
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<!-- 功能查询 -->
+				<entry key="queryFunction">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							SELECT *
+							FROM TBL_FUNCTION F
+							WHERE 1=1
+								/~userId: AND FUNCTIONID IN (SELECT FUNCTIONID FROM TBL_ROLEANDFUNCTIONRELATION WHERE ROLEID IN
+									(SELECT ROLEID FROM TBL_USERANDROLERELATION WHERE 1=1 AND USERID = {userId,long}))~/
+								/~departmentId: AND FUNCTIONID IN(SELECT FUNCTIONID FROM TBL_DEPARTMENTANDFUNCTIONRELATION
+									WHERE DEPARTMENTID= {departmentId,long} ) ~/
+								/~departmentCode:AND EXISTS
+									(
+									SELECT 1 DEPART FROM
+									TBL_DEPARTMENTANDFUNCTIONRELATION DF,TBL_DEPARTMENT D
+									WHERE
+									DF.DEPARTMENTID = D.DEPARTMENTID
+									AND F.FUNCTIONID=DF.FUNCTIONID
+									AND D.DEPARTMENTCODE = {departmentCode,String}
+									)
+								~/
+								/~functionName: AND F.FUNCTIONNAME  LIKE CONCAT('%',{functionName},'%')~/
+								/~functionUrl: AND F.FUNCTIONURL  LIKE CONCAT('%',{functionUrl},'%')~/
+								/~functionTag: AND F.TAG  LIKE CONCAT('%',{functionTag},'%')~/
+								/~riskLevel: AND F.RISKLEVEL = {riskLevel,String}~/
+								/~functionType: AND F.FUNCTIONTYPE = {functionType,String}~/
+								/~functionStatus: AND F.FUNCTIONSTATUS = {functionStatus,String}~/
+								/~logNeeded != null && logNeeded != '' && logNeeded == '0': AND (F.LOGNEEDED = '0' OR F.LOGNEEDED IS NULL)~/
+								/~logNeeded != null && logNeeded != '' && logNeeded != '0': AND F.LOGNEEDED = {logNeeded,String}~/
+								/~checkNeeded != null && checkNeeded != '' && checkNeeded == '0': AND (F.CHECKNEEDED = '0' OR F.CHECKNEEDED IS NULL)~/
+								/~checkNeeded != null && checkNeeded != '' && checkNeeded != '0': AND F.CHECKNEEDED = {checkNeeded,String}~/
+							ORDER BY CREATETIME DESC
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+
+				<!-- 菜单功能查询 -->
+				<entry key="queryUserAndFunctionList">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							SELECT * FROM TBL_FUNCTION WHERE
+									FUNCTIONSTATUS  = 'ACTIVE'
+									AND FUNCTIONID IN
+									(
+									SELECT
+											FUNCTIONID
+									FROM
+											TBL_ROLEANDFUNCTIONRELATION
+									WHERE
+											ROLEID IN
+											(
+											SELECT
+													RE.ROLEID
+											FROM
+													TBL_ROLE RE,
+													TBL_USERANDROLERELATION UAR
+											WHERE
+													 1 = 1
+													/~userId: and UAR.USERID = {userId,Long}~/
+													AND UAR.ROLEID    = RE.ROLEID
+													AND RE.ROLESTATUS = 'ACTIVE'
+											)
+									)
+									/~functionName: and functionName  LIKE CONCAT('%',{functionName},'%')~/
+							order by functionId desc
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<!-- 操作员查询 -->
+				<!-- u.isAdmin = '0' and u.isSuperAdmin ='0' (r.roleId not in(-1001,-1000)
+					or r.roleId is null) -->
+				<!--left join (select userId,max((case when roleId = -1000 then 1 else 0 end)) as isDepartmentAdmin from TBL_USERANDROLERELATION group by userId) raf on raf.userId = u.userId-->
+				<entry key="queryOperator">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select
+								u.userId,u.loginName,u.userStatus,u.userName,d.departmentName,d.departmentId,COALESCE(u.isAdmin,0) as isDepartmentAdmin
+							from TBL_USER u
+							left join TBL_DEPARTMENT d on d.departmentId = u.primaryDepartmentId
+							where u.userId > 0
+								/~loginName: and u.loginName  LIKE CONCAT('%',{loginName},'%')~/
+								/~userStatus: and u.userStatus = {userStatus,String}~/
+								/~userName: and u.userName like CONCAT('%',{userName},'%')  ~/
+								/~h_departmentId: and d.departmentId = {h_departmentId,Long}~/
+								/~departmentCode: and d.departmentCode = {departmentCode,String}~/
+							order by u.createTime desc
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+				<entry key="queryAllOperator">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select
+								u.userId,u.loginName,u.userStatus,u.userName,d.departmentName
+							from TBL_USER u left join TBL_DEPARTMENT d on d.departmentId = u.primaryDepartmentId
+							where  u.userId > 0
+								and not exists(select 1 from TBL_USERANDROLERELATION ur where ur.roleid in(-1001,-1000) and ur.userid=u.userid )
+								/~loginName: and u.loginName LIKE CONCAT('%',{loginName},'%')~/
+								/~userStatus: and u.userStatus = {userStatus,String}~/
+								/~userName: and u.userName LIKE CONCAT('%',{userName},'%')~/
+								/~departmentCode: and d.departmentCode = {departmentCode,String}~/
+								/~departmentId: and d.departmentId = {departmentId,Long}~/
+							order by u.createTime desc
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+				<!-- 查询操作员的角色 -->
+				<entry key="queryOperatorRoles">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select
+								r.roleId,r.roleName,r.roleStatus,r.description
+							from TBL_ROLE r where exists
+								(select '1' from TBL_USERANDROLERELATION ur
+								inner join TBL_USER u
+								on ur.userId = u.userId
+								where r.ROLEID=ur.ROLEID
+								/~userId: and u.userId = {userId,Long}~/
+								)
+							and r.roleId  not in (-1001,-1000,-999)
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<!-- 操作日志模板查询 -->
+				<entry key="queryOperationLogTemplate">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							SELECT
+								T.TEMPLATEID,T.CONTENT,T.FUNCTIONID,F.FUNCTIONNAME
+							FROM TBL_OPERATIONLOGTEMPLATE T LEFT JOIN TBL_FUNCTION F
+								ON T.FUNCTIONID=F.FUNCTIONID
+							WHERE 1=1
+								/~functionName: AND F.FUNCTIONNAME LIKE CONCAT('%',{functionName},'%')~/
+								/~functionId: AND T.FUNCTIONID LIKE CONCAT('%',{functionId},'%')~/
+								/~content: AND T.CONTENT LIKE CONCAT('%',{content},'%')~/
+								/~departmentId:
+								AND EXISTS (SELECT * FROM TBL_DEPARTMENTANDFUNCTIONRELATION D
+									WHERE D.FUNCTIONID = T.FUNCTIONID
+									AND D.DEPARTMENTID = {departmentId,Long}
+								)
+								~/
+							ORDER BY T.TEMPLATEID DESC
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<!-- 双权限审核模板查询 -->
+				<entry key="queryWorkItemTemplate">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							SELECT
+								T.TEMPLATEID,T.CONTENT,T.FUNCTIONID,F.FUNCTIONNAME
+							FROM TBL_WORKITEMTEMPLATE T LEFT JOIN TBL_FUNCTION F
+								ON T.FUNCTIONID=F.FUNCTIONID
+							WHERE 1=1
+								/~functionName: AND F.FUNCTIONNAME LIKE CONCAT('%',{functionName},'%')~/
+								/~functionId: AND T.FUNCTIONID LIKE CONCAT('%',{functionId},'%')~/
+								/~content: AND T.CONTENT LIKE CONCAT('%',{content},'%')~/
+								/~departmentId:
+								AND EXISTS (SELECT * FROM TBL_DEPARTMENTANDFUNCTIONRELATION D
+									WHERE D.FUNCTIONID = T.FUNCTIONID
+									AND D.DEPARTMENTID = {departmentId,Long}
+								)
+								~/
+							ORDER BY T.TEMPLATEID DESC
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<!-- 权限分配查询 -->
+				<entry key="queryOperatorRole">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select
+							r.roleId,r.roleName,r.roleStatus,r.description,r.roleType
+							from TBL_ROLE r where
+								r.roleStatus != 'FORBID'
+								and r.roleType = 'STAFF'
+								/~departmentId: and r.departmentId = {departmentId,Long}~/
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<!-- 角色信息查询 -->
+				<entry key="queryRoleFunction">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select * from tbl_function
+							where functionId in
+								(select functionId from tbl_roleandfunctionrelation
+								where 1=1 and roleId  not in (-1001,-1000,-999)
+								/~roleId: and roleId = {roleId,long}~/
+								)
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<!-- 角色关联的用户查询 -->
+				<entry key="queryUserForRole">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select
+								u.userId,u.primaryDepartmentId,u.loginName,u.userStatus,u.userName,u.isAdmin,d.departmentName
+							from TBL_USER u left join TBL_DEPARTMENT d on u.primaryDepartmentId = d.departmentId left join TBL_USERANDROLERELATION
+								url on url.userId = u.userId
+							where 1=1
+								/~roleId: and url.roleId = {roleId,long}~/
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<!-- 审核人的双重预复核查询 -->
+				<entry key="queryForPreAudit">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							SELECT
+								*
+							FROM TBL_WORKITEM W
+							WHERE W.WORKITEMTYPE = 'RISK'
+								AND W.WORKITEMSTATUS IN ('RISK_WAITING','RISK_CHECKING','WAITING')
+								/~functionIds: AND W.FUNCTIONID IN ([functionIds])~/
+								/~submittedUserName: AND W.SUBMITTEDUSERNAME LIKE CONCAT('%',{submittedUserName},'%')~/
+								/~approveUserName: AND W.APPROVEUSERNAME LIKE CONCAT('%',{approveUserName},'%')~/
+								/~workItemStatus: AND W.WORKITEMSTATUS = {workItemStatus,String}~/
+								/~fullContent: AND W.FULL_CONTENT LIKE CONCAT('%',{fullContent},'%')~/
+								/~submitStartTime: AND W.SUBMITTIME >= {submitStartTime,mintimestamp}~/
+								/~submitEndTime: AND W.SUBMITTIME <= {submitEndTime,nexttimestamp}~/
+								/~approveStartTime: AND W.APPROVETIME >= {approveStartTime,mintimestamp}~/
+								/~approveEndTime: AND W.APPROVETIME <= {approveEndTime,nexttimestamp}~/
+							ORDER BY W.SUBMITTIME DESC
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<!-- 审核人的双重复核查询 -->
+				<entry key="queryRecheckRecord">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select
+								*
+							from TBL_WORKITEM w
+							where 1=1
+								/~functionIds: and w.functionId in ([functionIds])~/
+								/~submittedUserName: and w.submittedUserName LIKE CONCAT('%',{submittedUserName},'%')~/
+								/~approveUserName: and w.approveUserName LIKE CONCAT('%',{approveUserName},'%')~/
+								/~rejectUserName: and w.rejectUserName = {rejectUserName,String}~/
+								/~workItemStatus: and w.workItemStatus = {workItemStatus,String}~/
+								/~workItemType: and w.workItemType = {workItemType,String}~/
+								/~invocatResult: and w.invocatResult = {invocatResult,String}~/
+								/~fullContent: and w.full_content LIKE CONCAT('%',{fullContent},'%')~/
+								/~submitStartTime: and w.submitTime >= {submitStartTime,mintimestamp}~/
+								/~submitEndTime: and w.submitTime <= {submitEndTime,nexttimestamp}~/
+								/~approveStartTime: and w.approveTime >= {approveStartTime,mintimestamp}~/
+								/~approveEndTime: and w.approveTime <= {approveEndTime,nexttimestamp}~/
+							order by w.submitTime desc
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<!-- 申请人的双重复核查询 -->
+				<entry key="queryRecheckRecordForSubmit">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select
+								*
+							from TBL_WORKITEM w
+							where 1=1
+								/~submittedBy: and w.submittedBy = {submittedBy,long}~/
+								/~submittedUserName: and w.submittedUserName LIKE CONCAT('%',{submittedUserName},'%')~/
+								/~approveUserName: and w.approveUserName LIKE CONCAT('%',{approveUserName},'%')~/
+								/~rejectUserName: and w.rejectUserName = {rejectUserName,String}~/
+								/~workItemStatus: and w.workItemStatus = {workItemStatus,String}~/
+								/~fullContent: and w.full_content LIKE CONCAT('%',{fullContent},'%')~/
+								/~submitStartTime: and w.submitTime >= {submitStartTime,mintimestamp}~/
+								/~submitEndTime: and w.submitTime <= {submitEndTime,nexttimestamp}~/
+								/~approveStartTime: and w.approveTime >= {approveStartTime,mintimestamp}~/
+								/~approveEndTime: and w.approveTime <= {approveEndTime,nexttimestamp}~/
+							order by w.submitTime desc
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+
+				<entry key="queryAllMenu">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							select
+								*
+							from TBL_MENU m left join TBL_FUNCTION f on m.functionId = f.functionId
+							where 1=1
+								/~userId: and f.functionId in (select functionId from TBL_ROLEANDFUNCTIONRELATION where roleId in
+								(select roleId from TBL_USERANDROLERELATION where 1=1 and userId = {userId,long}))~/
+								/~departmentId: and f.functionId in(select functionId from TBL_DEPARTMENTANDFUNCTIONRELATION
+								where departmentId= {departmentId,long} ) ~/
+								/~menuName: and m.menuName LIKE CONCAT('%',{menuName},'%')~/
+								/~functionId: and m.functionId = {functionId,long}~/
+							order by m.menuId desc
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+				<entry key="queryPortalMenu">
+					<bean class="com.zbjdl.utils.query.Query">
+						<property name="sql">
+							<value>
+							<![CDATA[
+							SELECT
+								*
+							FROM TBL_PORTAL_MENU M
+							WHERE MENUID != -1
+								/~departmentId: AND DEPARTMENTID = {departmentId,long} ~/
+								/~levelNum: AND LEVELNUM = {levelNum,long} ~/
+								/~menuName: AND M.MENUNAME LIKE CONCAT('%',{menuName},'%')~/
+								/~functionUrl: AND M.FUNCTIONURL LIKE CONCAT('%',{functionUrl},'%')~/
+							ORDER BY M.MENUID DESC
+							 
+							]]>
+							</value>
+						</property>
+					</bean>
+				</entry>
+				<entry key="functionStat" value-ref="functionStat"/>
+			</map>
+		</property>
+	</bean>
+	<bean id="functionStat" class="com.zbjdl.utils.query.Query">
+		<property name="sql">
+			<value>
+				<![CDATA[
+				SELECT * FROM (
+				/~departmentId == null || departmentId == '':
+				(SELECT
+					0 AS DEPARTMENTID,
+					'权限' AS DEPARTMENTNAME,
+					MAX(F.FUNCTIONID) AS MAX_FUNCTIONID,
+					MIN(F.FUNCTIONID) AS MIN_FUNCTIONID,
+					COUNT(F.FUNCTIONID) AS FUNCTIONID_COUNT
+				FROM TBL_FUNCTION F
+				WHERE F.FUNCTIONID > -9998
+					AND F.PREFUNCTIONID = -99910000
+				)
+				UNION
+				~/
+				(SELECT
+					D.DEPARTMENTID AS DEPARTMENTID,
+					DEPARTMENTNAME,
+					MAX(F.FUNCTIONID) AS MAX_FUNCTIONID,
+					MIN(F.FUNCTIONID) AS MIN_FUNCTIONID,
+					COUNT(F.FUNCTIONID) AS FUNCTIONID_COUNT
+				FROM
+					TBL_DEPARTMENT D,
+					TBL_DEPARTMENTANDFUNCTIONRELATION DF,
+					TBL_FUNCTION F
+				WHERE D.DEPARTMENTID = DF.DEPARTMENTID
+					AND DF.FUNCTIONID = F.FUNCTIONID
+					AND F.FUNCTIONID > -99910000
+					/~departmentId: AND D.DEPARTMENTID = {departmentId,long}~/
+					GROUP BY D.DEPARTMENTID, D.DEPARTMENTNAME
+				)) T
+				ORDER BY T.DEPARTMENTID
+				]]>
+			</value>
+		</property>
+	</bean>
+
+</beans>

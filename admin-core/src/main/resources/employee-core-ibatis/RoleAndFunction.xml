@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.RoleAndFunctionRelationDao">
+	<resultMap type="RoleAndFunctionRelation" id="RoleAndFunctionRelationResultMap">
+		<id property="id" column="id" javaType="java.lang.Long"/>
+		<result property="roleId" column="roleid" javaType="java.lang.Long"/>
+		<result property="functionId" column="functionid" javaType="java.lang.Long"/>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id"
+		parameterType="RoleAndFunctionRelation">
+		insert into TBL_RoleAndFunctionRelation
+		(
+			roleId,functionId
+		)
+		values
+		(
+			#{roleId,jdbcType=BIGINT},
+			#{functionId,jdbcType=BIGINT}
+		)
+	</insert>
+
+	<select id="selectById" parameterType="java.lang.Long" resultMap="RoleAndFunctionRelationResultMap">
+		select * from TBL_RoleAndFunctionRelation where id=#{value}
+
+	</select>
+
+	<select id="queryByRoleId" parameterType="java.lang.Long" resultMap="RoleAndFunctionRelationResultMap">
+		select * from TBL_RoleAndFunctionRelation as rf where rf.roleId=#{value}
+
+	</select>
+
+	<select id="queryByFunctionId" parameterType="java.lang.Long" resultMap="RoleAndFunctionRelationResultMap">
+		select * from TBL_RoleAndFunctionRelation as rf where rf.functionId=#{value}
+
+	</select>
+
+	<select id="queryByRelation" parameterType="RoleAndFunctionRelation" resultMap="RoleAndFunctionRelationResultMap">
+		select * from TBL_RoleAndFunctionRelation as rf where rf.functionId=#{functionId} and rf.roleId=#{roleId}
+
+	</select>
+
+	<delete id="deleteRoleAndFunctionRelation" parameterType="RoleAndFunctionRelation">
+		delete from TBL_RoleAndFunctionRelation where roleId = #{roleId} and functionId = #{functionId}
+	</delete>
+
+	<delete id="deleteRoleAndFunctionByFunctionId" parameterType="java.lang.Long">
+		delete from TBL_RoleAndFunctionRelation where functionId = #{functionId}
+	</delete>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM
+		TBL_ROLEANDFUNCTIONRELATION WHERE ID=#{id}
+	</delete>
+
+	<delete id="deleteRoleAndFunctionByCondition"
+		parameterType="java.util.Map">
+		DELETE FROM TBL_ROLEANDFUNCTIONRELATION
+		<where>
+			<if test="functionId != null">AND FUNCTIONID =#{functionId}</if>
+			<if test="departmentId != null">AND ROLEID IN(SELECT ROLEID FROM TBL_ROLE WHERE DEPARTMENTID =#{departmentId})</if>
+			<if test="roleId != null">AND ROLEID =#{roleId}</if>
+		</where>
+	</delete>
+
+</mapper>

@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <TITLE> select </TITLE>
+  <link rel="stylesheet" type="text/css" href="css/jquery.suselect.css" />
+  <script type="text/javascript" src="../../lib/jquery.min.js"></script>
+  <script type="text/javascript" src="../../lib/jquery.bgiframe.js"></script>
+  <script type="text/javascript" src="jquery.suselect.js"></script>
+  <script type="text/javascript">
+	$(function(){
+		$('#like').suselect({single: false, cols: 3});
+		$('#type').suselect();
+	});
+  </script>
+ </HEAD>
+
+ <BODY>
+  卡类型：
+  <select name="type" id="type">
+	<option value="jjk" su-selected='selected'>借记卡</option>
+	<option value="xyk" >信用卡</option>
+	<option value="jk" >金卡</option>
+	<option value="pjk" >白金卡</option>
+  </select>
+
+  <br/><br/>
+  爱好：
+  <select name="like" id="like">
+	<option value="football">足球</option>
+	<option value="basketball">篮球</option>
+	<option value="pb">乒乓球</option>
+	<option value="pball">排球</option>
+	<option value="geball">高尔夫</option>
+	<option value="gball">搞球</option>
+	<option value="hball">黑球</option>
+	<option value="swing">游泳</option>
+	<option value="ps">爬上</option>
+	<option value="yz">野战</option>
+	<option value="driver">开车</option>
+	<option value="cz">车震</option>
+  </select>
+ </BODY>
+</HTML>

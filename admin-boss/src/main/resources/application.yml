@@ -1,0 +1,45 @@
+spring:
+    profiles:
+        active: default
+    mvc:
+        view:
+            prefix: /WEB-INF/views/
+            suffix: .jsp
+    datasource:
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://mysqldb.zbjdl.in/zbjdl_admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true
+        username: root
+        password: wK=QwJmR<592
+        validation-query: select 1 from dual
+        test-on-borrow: true
+
+# mybatis:
+    config: classpath:mybatisConfig.xml
+
+server:
+    contextPath: /admin-boss
+    port: 8080
+
+zbjdl:
+    dubbo:
+        app: admin-boss
+        registry_address: registry.zbjdl.in:2181
+
+---
+
+spring:
+    profiles: development
+
+server:
+    port: 8081
+
+---
+spring:
+    profiles: production
+    datasource:
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://mysqldb.zbjdl.in/zbjdl_admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true
+        username: root
+        password: qr0?mFD7glkr
+        validation-query: select 1 from dual
+        test-on-borrow: true

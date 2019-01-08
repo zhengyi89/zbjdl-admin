@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.zbjdl.boss.admin.portal" extends="employee-default"
+		namespace="/tab">
+
+		<action name="get"
+				class="com.zbjdl.boss.admin.menu.action.PortalTabAction" method="get">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+
+		<action name="active"
+				class="com.zbjdl.boss.admin.menu.action.PortalTabAction" method="active">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+
+		<action name="delete"
+				class="com.zbjdl.boss.admin.menu.action.PortalTabAction" method="delete">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+
+		<action name="clean"
+				class="com.zbjdl.boss.admin.menu.action.PortalTabAction" method="clean">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+	</package>
+</struts>

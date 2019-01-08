@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.MenuDao">
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="menuId"
+		parameterType="Menu">
+		INSERT INTO TBL_MENU
+		(
+		menuName,functionId,sequence,parentId,levelNum,iconName
+		)
+		VALUES
+		(
+		#{menuName,jdbcType=VARCHAR},
+		#{functionId,jdbcType=BIGINT},
+		#{sequence,jdbcType=INTEGER},
+		#{parentId,jdbcType=BIGINT},
+		#{levelNum,jdbcType=INTEGER},
+		#{iconName,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="long">
+		DELETE FROM TBL_MENU WHERE
+		menuId = #{menuId}
+	</delete>
+
+	<update id="update" parameterType="Menu">
+		update TBL_MENU
+		<set>
+			<if test="menuName != null">menuName = #{menuName},</if>
+			<if test="functionId != null">functionId = #{functionId},</if>
+			<if test="sequence != null">sequence = #{sequence},</if>
+			<if test="parentId != null">parentId = #{parentId},</if>
+			<if test="levelNum != null">levelNum = #{levelNum},</if>
+			<if test="iconName != null">iconName = #{iconName},</if>
+		</set>
+		where menuId = #{menuId}
+	</update>
+
+	<select id="findList" parameterType="Menu" resultType="Menu">
+		select * from TBL_MENU
+		<where>
+			<if test="menuName != null">and menuName = #{menuName}</if>
+			<if test="functionId != null">and functionId = #{functionId}</if>
+			<if test="parentId != null">and parentId = #{parentId}</if>
+			<if test="sequence != null">and sequence = #{sequence}</if>
+			<if test="levelNum != null">and levelNum = #{levelNum}</if>
+			<if test="menuId != null">and menuId = #{menuId}</if>
+		</where>
+		order by sequence asc
+
+	</select>
+
+	<select id="hasChildrenMenus" parameterType="long" resultType="int">
+		SELECT count(*) FROM TBL_MENU WHERE parentId = #{parentId}
+
+	</select>
+
+	<select id="selectById" parameterType="long" resultType="Menu">
+		SELECT * FROM
+		TBL_MENU WHERE menuId = #{menuId}
+
+	</select>
+
+	<select id="findAll" resultType="Menu">
+		SELECT * FROM TBL_MENU ORDER BY menuId
+
+	</select>
+
+	<select id="queryMenusByFunctionIds" parameterType="list" resultType="Menu">
+		select * from TBL_MENU where functionId in
+		<foreach collection="list" item="functionId" open="(" separator="," close=")">
+			#{functionId}
+		</foreach>
+		order by sequence asc
+
+	</select>
+
+<!-- 	<select id="queryAllMenus" parameterType="list" resultType="Menu">
+		SELECT * FROM TBL_MENU ORDER BY sequence ASC
+
+	</select>
+ -->
+	<!-- 按照菜单级别排序，方便构建 MenuModel -->
+	<select id="queryMenusByUserId" parameterType="list" resultType="Menu">
+		SELECT distinct m.* FROM TBL_MENU m
+			INNER JOIN TBL_FUNCTION f
+				ON m.functionid = f.functionid AND f.functionstatus = 'ACTIVE'
+			INNER JOIN TBL_ROLEANDFUNCTIONRELATION rf
+				ON f.functionid = rf.functionid
+			INNER JOIN TBL_ROLE r
+				ON rf.roleid = r.roleid AND r.ROLESTATUS = 'ACTIVE'
+			INNER JOIN TBL_USERANDROLERELATION urr
+				ON rf.roleid = urr.roleid AND urr.userid = #{userId}
+		ORDER BY levelnum ASC, sequence ASC
+
+	</select>
+
+	<select id="queryMaxSequenceByParentId" parameterType="long" resultType="int">
+		SELECT max(sequence) FROM TBL_MENU WHERE parentId = #{parentId}
+
+	</select>
+
+</mapper>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.WorkItemDao">
+	<resultMap type="WorkItem" id="WorkItemResultMap">
+		<id property="workItemId" column="workitemid" javaType="java.lang.Long"/>
+		<result property="functionId" column="functionId" javaType="java.lang.Long"/>
+		<result property="resourceId" column="resourceId" jdbcType="VARCHAR"/>
+		<result property="content" column="content"/>
+		<result property="workItemStatus" column="workItemStatus" jdbcType="VARCHAR"
+			javaType="com.zbjdl.boss.admin.workitem.enums.WorkItemStatusEnum"/>
+		<result property="rejectCause" column="rejectCause"/>
+		<result property="workItemType" column="workItemType" jdbcType="VARCHAR"/>
+		<result property="cancelBy" column="cancelBy" javaType="java.lang.Long"/>
+		<result property="cancelUserName" column="cancelUserName" jdbcType="VARCHAR"/>
+		<result property="submittedBy" column="submittedBy" javaType="java.lang.Long"/>
+		<result property="submittedUserName" column="submittedUserName" jdbcType="VARCHAR"/>
+		<result property="lockedBy" column="lockedBy" javaType="java.lang.Long"/>
+		<result property="lockedUserName" column="lockedUserName" jdbcType="VARCHAR"/>
+		<result property="rejectedBy" column="rejectBy" javaType="java.lang.Long"/>
+		<result property="rejectUserName" column="rejectUserName" jdbcType="VARCHAR"/>
+		<result property="approveBy" column="approveBy" javaType="java.lang.Long"/>
+		<result property="approveUserName" column="approveUserName" jdbcType="VARCHAR"/>
+		<result property="cancelTime" column="cancelTime" jdbcType="TIMESTAMP"/>
+		<result property="submitTime" column="submitTime" jdbcType="TIMESTAMP"/>
+		<result property="lockTime" column="lockTime" jdbcType="TIMESTAMP"/>
+		<result property="rejectTime" column="rejectTime" jdbcType="TIMESTAMP"/>
+		<result property="approveTime" column="approveTime" jdbcType="TIMESTAMP"/>
+		<result property="invocatTime" column="rejectTime" jdbcType="TIMESTAMP"/>
+		<result property="summary" column="summary" jdbcType="VARCHAR"/>
+		<result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+		<result property="invocatResult" column="invocatResult" jdbcType="VARCHAR"/>
+		<result property="resultComment" column="RESULTCOMMENT" jdbcType="VARCHAR"/>
+		<result property="fullContent" column="FULL_CONTENT" jdbcType="VARCHAR"/>
+		<!--
+		<result property="belongSystem" column="BELONGSYSTEM" jdbcType="VARCHAR"
+			javaType="com.zbjdl.boss.admin.workitem.enums.WorkItemSystemEnum"/>
+		-->
+		<result property="belongSystem" column="BELONGSYSTEM" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="workItemId"
+		parameterType="WorkItem">
+		insert into TBL_WorkItem
+		(
+			functionId,resourceId,content,workItemStatus,rejectCause,workItemType,cancelBy,cancelUserName,
+			submittedBy,submittedUserName,lockedBy,lockedUserName,rejectBy,rejectUserName,approveBy,
+			approveUserName,cancelTime,submitTime,lockTime,rejectTime,approveTime,invocatTime,summary,
+			createTime,updateTime,invocatResult,RESULTCOMMENT,BELONGSYSTEM,FULL_CONTENT
+		)
+		values
+		(
+			#{functionId,jdbcType=BIGINT},
+			#{resourceId,jdbcType=VARCHAR},
+			#{content,jdbcType=VARCHAR},
+			#{workItemStatus,jdbcType=VARCHAR},
+			#{rejectCause,jdbcType=VARCHAR},
+			#{workItemType,jdbcType=VARCHAR},
+			#{cancelBy,jdbcType=BIGINT},
+			#{cancelUserName,jdbcType=VARCHAR},
+			#{submittedBy,jdbcType=BIGINT},
+			#{submittedUserName,jdbcType=VARCHAR},
+			#{lockedBy,jdbcType=BIGINT},
+			#{lockedUserName,jdbcType=VARCHAR},
+			#{rejectedBy,jdbcType=BIGINT},
+			#{rejectUserName,jdbcType=VARCHAR},
+			#{approveBy,jdbcType=BIGINT},
+			#{approveUserName,jdbcType=VARCHAR},
+			#{cancelTime,jdbcType=TIMESTAMP},
+			#{submitTime,jdbcType=TIMESTAMP},
+			#{lockTime,jdbcType=TIMESTAMP},
+			#{rejectTime,jdbcType=TIMESTAMP},
+			#{approveTime,jdbcType=VARCHAR},
+			#{invocatTime,jdbcType=TIMESTAMP},
+			#{summary,jdbcType=VARCHAR},
+			#{createTime,jdbcType=TIMESTAMP},
+			#{updateTime,jdbcType=TIMESTAMP},
+			#{invocatResult,jdbcType=VARCHAR},
+			#{resultComment,jdbcType=VARCHAR},
+			#{belongSystem,jdbcType=VARCHAR},
+			#{fullContent,jdbcType=VARCHAR}
+			)
+	</insert>
+
+	<select id="findAll" resultMap="WorkItemResultMap">
+		select * from TBL_WorkItem order by workItemId
+
+	</select>
+
+	<select id="selectById" parameterType="java.lang.Long" resultMap="WorkItemResultMap">
+		select * from TBL_WorkItem where workItemId=#{value}
+
+	</select>
+
+	<select id="queryByResourceId" parameterType="java.lang.Long" resultMap="WorkItemResultMap">
+		SELECT * FROM TBL_WORKITEM WHERE RESOURCEID=#{value} ORDER BY WORKITEMID DESC
+
+	</select>
+
+	<select id="findList" parameterType="WorkItem" resultMap="WorkItemResultMap">
+		select * from TBL_WorkItem as w
+		<where>
+			<if test="functionId != null">and w.functionId = #{functionId,jdbcType=BIGINT}</if>
+			<if test="resourceId != null">and w.resourceId = #{resourceId,jdbcType=VARCHAR}</if>
+			<if test="content != null">and w.content = #{content,jdbcType=VARCHAR}</if>
+			<if test="workItemStatus != null">and w.workItemStatus = #{workItemStatus,jdbcType=VARCHAR,javaType=com.zbjdl.boss.admin.workitem.enums.WorkItemStatusEnum}</if>
+			<if test="rejectCause != null">and w.rejectCause = #{rejectCause,jdbcType=VARCHAR}</if>
+			<if test="workItemType != null">and w.workItemType = #{workItemType,jdbcType=VARCHAR}</if>
+			<if test="cancelBy != null">and w.cancelBy = #{cancelBy,jdbcType=BIGINT}</if>
+			<if test="cancelUserName != null">and w.cancelUserName = #{cancelUserName,jdbcType=VARCHAR}</if>
+			<if test="submittedBy != null">and w.submittedBy = #{submittedBy,jdbcType=BIGINT}</if>
+			<if test="submittedUserName != null">and w.submittedUserName = #{submittedUserName,jdbcType=VARCHAR}</if>
+			<if test="lockedBy != null">and w.lockedBy = #{lockedBy,jdbcType=BIGINT}</if>
+			<if test="lockedUserName != null">and w.lockedUserName = #{lockedUserName,jdbcType=VARCHAR}</if>
+			<if test="rejectedBy != null">and w.rejectBy = #{rejectedBy,jdbcType=BIGINT}</if>
+			<if test="rejectUserName != null">and w.rejectUserName = #{rejectUserName,jdbcType=VARCHAR}</if>
+			<if test="approveBy != null">and w.approveBy = #{approveBy,jdbcType=BIGINT}</if>
+			<if test="approveUserName != null">and w.approveUserName = #{approveUserName,jdbcType=VARCHAR}</if>
+			<if test="cancelTime != null">and w.cancelTime = #{cancelTime,jdbcType=TIMESTAMP}</if>
+			<if test="submitTime != null">and w.submitTime = #{submitTime,jdbcType=TIMESTAMP}</if>
+			<if test="lockTime != null">and w.lockTime = #{lockTime,jdbcType=TIMESTAMP}</if>
+			<if test="rejectTime != null">and w.rejectTime = #{rejectTime,jdbcType=TIMESTAMP}</if>
+			<if test="approveTime != null">and w.approveTime = #{approveTime,jdbcType=TIMESTAMP}</if>
+			<if test="invocatTime != null">and w.invocatTime = #{invocatTime,jdbcType=TIMESTAMP}</if>
+			<if test="summary != null">and w.summary = #{summary,jdbcType=VARCHAR}</if>
+			<if test="createTime != null">and w.createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+			<if test="updateTime != null">and w.updateTime = #{updateTime,jdbcType=TIMESTAMP}</if>
+			<if test="invocatResult != null">and w.invocatResult = #{invocatResult,jdbcType=VARCHAR}</if>
+			<if test="resultComment != null">and w.RESULTCOMMENT = #{resultComment,jdbcType=VARCHAR}</if>
+			<if test="belongSystem != null">and w.BELONGSYSTEM = #{belongSystem,jdbcType=VARCHAR}</if>
+			<if test="fullContent != null">and w.FULL_CONTENT = #{fullContent,jdbcType=VARCHAR}</if>
+		</where>
+
+	</select>
+
+	<update id="update" parameterType="WorkItem">
+		update TBL_WorkItem as w
+		<set>
+		w.lockedBy = #{lockedBy,jdbcType=BIGINT},
+		w.lockedUserName = #{lockedUserName,jdbcType=VARCHAR},
+		w.lockTime = #{lockTime,jdbcType=TIMESTAMP},
+		<if test="functionId != null">w.functionId = #{functionId,jdbcType=BIGINT},</if>
+		<if test="content != null">w.content = #{content,jdbcType=VARCHAR},</if>
+		<if test="workItemStatus != null">w.workItemStatus = #{workItemStatus,jdbcType=VARCHAR,javaType=com.zbjdl.boss.admin.workitem.enums.WorkItemStatusEnum},</if>
+		<if test="rejectCause != null">w.rejectCause = #{rejectCause,jdbcType=VARCHAR},</if>
+		<if test="workItemType != null">w.workItemType = #{workItemType,jdbcType=VARCHAR},</if>
+		<if test="cancelBy != null">w.cancelBy = #{cancelBy,jdbcType=BIGINT},</if>
+		<if test="cancelUserName != null">w.cancelUserName = #{cancelUserName,jdbcType=VARCHAR},</if>
+		<if test="submittedBy != null">w.submittedBy = #{submittedBy,jdbcType=BIGINT},</if>
+		<if test="submittedUserName != null">w.submittedUserName = #{submittedUserName,jdbcType=VARCHAR},</if>
+		<if test="rejectedBy != null">w.rejectBy = #{rejectedBy,jdbcType=BIGINT},</if>
+		<if test="rejectUserName != null">w.rejectUserName = #{rejectUserName,jdbcType=VARCHAR},</if>
+		<if test="approveBy != null">w.approveBy = #{approveBy,jdbcType=BIGINT},</if>
+		<if test="approveUserName != null">w.approveUserName = #{approveUserName,jdbcType=VARCHAR},</if>
+		<if test="cancelTime != null">w.cancelTime = #{cancelTime,jdbcType=TIMESTAMP},</if>
+		<if test="submitTime != null">w.submitTime = #{submitTime,jdbcType=TIMESTAMP},</if>
+		<if test="rejectTime != null">w.rejectTime = #{rejectTime,jdbcType=TIMESTAMP},</if>
+		<if test="approveTime != null">w.approveTime = #{approveTime,jdbcType=TIMESTAMP},</if>
+		<if test="invocatTime != null">w.invocatTime = #{invocatTime,jdbcType=TIMESTAMP},</if>
+		<if test="summary != null">w.summary = #{summary,jdbcType=VARCHAR},</if>
+		<if test="createTime != null">w.createTime = #{createTime,jdbcType=TIMESTAMP},</if>
+		<if test="updateTime != null">w.updateTime = #{updateTime,jdbcType=TIMESTAMP},</if>
+		<if test="invocatResult != null">w.invocatResult = #{invocatResult,jdbcType=VARCHAR},</if>
+		<if test="resultComment != null">w.RESULTCOMMENT = #{resultComment,jdbcType=VARCHAR},</if>
+		<if test="belongSystem != null">w.BELONGSYSTEM = #{belongSystem,jdbcType=VARCHAR},</if>
+		<if test="fullContent != null">w.FULL_CONTENT = #{fullContent,jdbcType=VARCHAR}</if>
+		</set>
+		where w.workItemId = #{workItemId}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from TBL_WorkItem where workItemId = #{value}
+	</delete>
+
+</mapper>

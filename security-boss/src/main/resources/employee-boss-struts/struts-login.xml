@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.zbjdl.boss.admin.login" extends="employee-default"
+		namespace="/loginout">
+		<interceptors>
+			<interceptor-stack name="loginInterceptorStack">
+				<interceptor-ref name="paramInterceptor"/>
+				<interceptor-ref name="exceptionInterceptor" />
+				<interceptor-ref name="operationLogInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="loginInterceptorStack" />
+
+		<action name="showLogin" class="com.zbjdl.boss.admin.login.LoginAction" method="execute">
+			<result name="success">/WEB-INF/pages/login/login.jsp</result>
+		</action>
+
+		<!-- 用户登陆 -->
+		<action name="login" class="com.zbjdl.boss.admin.login.LoginAction" method="login">
+			<result name="success" type="redirect">/menu/showMenu?${tokenPair}</result>
+			<result name="pwdModify" type="redirect">/user/showModifyPwd?decoration=false&amp;${tokenPair}</result>
+			<result name="serviceUrl" type="redirect">${tokenPair}</result>
+			<result name="loginJsp" type="dispatcher">/WEB-INF/pages/login/login.jsp</result>
+			<result name="portal" type="redirect">/menu/customerPortal?decoration=false&amp;${tokenPair}</result>
+		</action>
+		
+		<!-- 系管员签到登陆 -->
+
+		<action name="showSignIn" class="com.zbjdl.boss.admin.user.action.SuperAdminSignInAction"
+			method="showSignIn">
+			<result name="success">/WEB-INF/pages/user/superAdminSignIn.jsp</result>
+		</action>
+
+		<action name="superAdminSignIn" class="com.zbjdl.boss.admin.user.action.SuperAdminSignInAction"
+			method="superAdminSignIn">
+			<result name="success" type="redirect">/menu/showMenu</result>
+			<result name="loginAdminJsp">/WEB-INF/pages/user/superAdminSignIn.jsp</result>
+		</action>
+
+		<!-- 用户登出 -->
+		<action name="logout" class="com.zbjdl.boss.admin.logout.LogoutAction">
+			<result name="success" type="redirect">/loginout/showLogin</result>
+		</action>
+		<!-- 单点登录验证器 -->
+		<action name="ssoValid" class="com.zbjdl.boss.admin.sso.SSOValidateAction">
+			<result name="success" type="redirect">/menu/showMenu?${tokenPair}</result>
+			<result name="serviceUrl" type="redirect">${tokenPair}</result>
+			<result name="login" type="redirect">/loginout/showLogin?returnUrl=${returnUrl}</result>
+            <result name="failTips">/WEB-INF/pages/login/failTips.jsp</result>
+		</action>
+	</package>
+</struts>

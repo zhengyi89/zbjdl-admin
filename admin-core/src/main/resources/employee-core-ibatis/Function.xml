@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.FunctionDao">
+
+	<resultMap type="Function" id="FunctionResultMap">
+		<id property="functionId" column="FUNCTIONID" javaType="java.lang.Long"/>
+		<result property="functionName" column="FUNCTIONNAME" javaType="java.lang.String"/>
+		<result property="functionUrl" column="FUNCTIIONURL" javaType="java.lang.String"/>
+		<result property="preFunctionId" column="PREFUNCTIONID" javaType="java.lang.Long"/>
+		<result property="description" column="DESCRIPTION" javaType="java.lang.String"/>
+		<result property="riskLevel" column="RISKLEVEL" jdbcType="VARCHAR"
+		        javaType="com.zbjdl.boss.admin.function.enums.FunctionRiskLevelEnum"/>
+		<result property="functionType" column="FUNCTIONTYPE" jdbcType="VARCHAR"
+		        javaType="com.zbjdl.boss.admin.function.enums.FunctionTypeEnum"/>
+		<result property="functionStatus" column="FUNCTIONSTATUS" jdbcType="VARCHAR"
+		        javaType="com.zbjdl.boss.admin.function.enums.FunctionStatusEnum"/>
+		<result property="createTime" column="CREATETIME" javaType="java.sql.Timestamp"/>
+		<result property="checkNeeded" column="CHECKNEEDED" jdbcType="VARCHAR"/>
+		<result property="logNeeded" column="LOGNEEDED" jdbcType="VARCHAR"/>
+		<result property="display" column="DISPLAY" jdbcType="VARCHAR"/>
+		<result property="checkFunctionId" column="CHECKFUNCTIONID" javaType="java.lang.Long"/>
+		<result property="systemId" column="SYSTEMID" javaType="java.lang.Long"/>
+		<result property="keyWord" column="KEYWORD" javaType="java.lang.String"/>
+		<result property="tag" column="TAG" javaType="java.lang.String"/>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="functionId" parameterType="Function">
+		INSERT INTO TBL_FUNCTION
+		(
+			functionId, functionName, functionUrl, preFunctionId, description, riskLevel, functionType, functionStatus, createTime, checkNeeded, logNeeded, display, checkFunctionId, KEYWORD, tag
+		)
+			VALUES
+			(
+				#{functionId,jdbcType=BIGINT},
+				#{functionName,jdbcType=VARCHAR},
+				#{functionUrl,jdbcType=VARCHAR},
+				#{preFunctionId,jdbcType=BIGINT},
+				#{description,jdbcType=VARCHAR},
+				#{riskLevel,jdbcType=VARCHAR},
+				#{functionType,jdbcType=VARCHAR},
+				#{functionStatus,jdbcType=VARCHAR},
+				#{createTime,jdbcType=TIMESTAMP},
+				#{checkNeeded,jdbcType=VARCHAR},
+				#{logNeeded,jdbcType=VARCHAR},
+				#{display,jdbcType=VARCHAR},
+				#{checkFunctionId,jdbcType=BIGINT},
+				#{keyWord,jdbcType=VARCHAR},
+				#{tag,jdbcType=VARCHAR}
+			)
+	</insert>
+
+	<insert id="insertWithNullFunctionId" useGeneratedKeys="true" keyProperty="functionId" parameterType="Function">
+		INSERT INTO TBL_FUNCTION
+		(
+			functionName, functionUrl, preFunctionId, description, riskLevel, functionType, functionStatus, createTime, checkNeeded, logNeeded, display, checkFunctionId, KEYWORD, tag
+		)
+			VALUES
+			(
+				#{functionName,jdbcType=VARCHAR},
+				#{functionUrl,jdbcType=VARCHAR},
+				#{preFunctionId,jdbcType=BIGINT},
+				#{description,jdbcType=VARCHAR},
+				#{riskLevel,jdbcType=VARCHAR},
+				#{functionType,jdbcType=VARCHAR},
+				#{functionStatus,jdbcType=VARCHAR},
+				#{createTime,jdbcType=TIMESTAMP},
+				#{checkNeeded,jdbcType=VARCHAR},
+				#{logNeeded,jdbcType=VARCHAR},
+				#{display,jdbcType=VARCHAR},
+				#{checkFunctionId,jdbcType=BIGINT},
+				#{keyWord,jdbcType=VARCHAR},
+				#{tag,jdbcType=VARCHAR}
+			)
+	</insert>
+
+	<delete id="delete" parameterType="long">
+		DELETE FROM TBL_FUNCTION
+		WHERE
+			functionId = #{functionId}
+	</delete>
+
+	<delete id="deleteByDepartmentId" parameterType="long">
+		DELETE FROM TBL_FUNCTION
+		WHERE FUNCTIONID IN (
+			SELECT
+				FUNCTIONID
+			FROM TBL_DEPARTMENTANDFUNCTIONRELATION
+			WHERE departmentId = #{departmentId}
+		)
+	</delete>
+
+	<delete id="deleteRelationByDepartmentId" parameterType="long">
+		DELETE FROM TBL_DEPARTMENTANDFUNCTIONRELATION
+		WHERE departmentId = #{departmentId}
+	</delete>
+
+	<update id="update" parameterType="Function">
+		update TBL_FUNCTION
+		<set>
+			<if test="functionName != null">functionName = #{functionName},</if>
+			<if test="functionUrl != null">functionUrl = #{functionUrl},</if>
+			<if test="preFunctionId != null">preFunctionId = #{preFunctionId},</if>
+			<if test="description != null">description = #{description},</if>
+			<if test="riskLevel != null">riskLevel = #{riskLevel},</if>
+			<if test="functionType != null">functionType = #{functionType},</if>
+			<if test="functionStatus != null">functionStatus = #{functionStatus},</if>
+			<if test="checkNeeded != null">checkNeeded = #{checkNeeded},</if>
+			<if test="logNeeded != null">logNeeded = #{logNeeded},</if>
+			<if test="checkFunctionId != null">checkFunctionId = #{checkFunctionId},</if>
+			<if test="display != null">display = #{display},</if>
+			<if test="keyWord != null">KEYWORD = #{keyWord},</if>
+			<if test="tag != null">tag = #{tag}</if>
+		</set>
+		where functionId = #{functionId}
+	</update>
+
+	<update id="migrateFunction" parameterType="map">
+		UPDATE TBL_DEPARTMENTANDFUNCTIONRELATION
+		SET departmentId = #{newDepartmentId}
+		WHERE departmentId = #{departmentId} AND functionId = #{functionId}
+	</update>
+
+	<select id="queryByFunction" parameterType="Function" resultMap="FunctionResultMap">
+		select * from TBL_FUNCTION
+		<where>
+			<if test="functionName != null">and functionName = #{functionName}</if>
+			<if test="functionUrl != null">and functionUrl = #{functionUrl}</if>
+			<if test="preFunctionId != null">and preFunctionId = #{preFunctionId}</if>
+			<if test="functionStatus != null">and functionStatus = #{functionStatus}</if>
+			<if test="functionType != null">and functionType = #{functionType}</if>
+			<if test="display != null">and display = #{display}</if>
+			<if test="functionId != null">and functionId = #{functionId}</if>
+			<if test="tag != null">and tag = #{tag}</if>
+		</where>
+	</select>
+
+	<select id="queryFunctionByUri" parameterType="String" resultMap="FunctionResultMap">
+		SELECT
+			*
+		FROM
+			TBL_FUNCTION
+		WHERE
+			FUNCTIONURL LIKE #{uri}
+	</select>
+
+	<select id="queryFuntionByUserId" parameterType="Long" resultMap="FunctionResultMap">
+		SELECT
+			*
+		FROM TBL_FUNCTION f
+			INNER JOIN TBL_ROLEANDFUNCTIONRELATION rf
+				ON f.functionid = rf.functionid AND f.functionstatus = 'ACTIVE'
+			INNER JOIN TBL_ROLE r
+				ON rf.roleid = r.roleid AND r.ROLESTATUS = 'ACTIVE'
+			INNER JOIN TBL_USERANDROLERELATION urr
+				ON rf.roleid = urr.roleid AND urr.userid = #{userId}
+
+	</select>
+
+	<select id="queryFuntionByDepartmentIdAndFunctionId" parameterType="java.util.HashMap"
+	        resultMap="FunctionResultMap">
+		select * from TBL_FUNCTION f inner join TBL_DEPARTMENTANDFUNCTIONRELATION df on f.functionid = df.functionid and
+		f.functionstatus = 'ACTIVE' and <![CDATA[ f.functionid <= #{functionId} ]]>
+		<if test="departmentId != null">
+			and df.departmentid= #{departmentId}
+		</if>
+		order by f.functionid desc
+
+	</select>
+
+	<select id="queryFuntionIdByDepartmentId" parameterType="map" resultType="java.util.List">
+		SELECT
+			FUNCTIONID
+		FROM TBL_DEPARTMENTANDFUNCTIONRELATION
+		WHERE DEPARTMENTID = #{departmentId}
+
+	</select>
+
+	<select id="queryFuntionByDepartmentId" parameterType="Long" resultMap="FunctionResultMap">
+		select f.* from TBL_FUNCTION f inner join TBL_DEPARTMENTANDFUNCTIONRELATION df on f.functionid = df.functionid and
+		f.functionstatus = 'ACTIVE'
+		<if test="departmentId != null">
+			and df.departmentid= #{departmentId}
+		</if>
+
+	</select>
+
+	<select id="queryFuntionByRoleId" parameterType="Long" resultMap="FunctionResultMap">
+		SELECT
+			f.*
+		FROM TBL_FUNCTION f
+			INNER JOIN TBL_ROLEANDFUNCTIONRELATION rf
+				ON f.functionid = rf.functionid AND f.functionstatus = 'ACTIVE' and rf.roleid = #{roleId}
+
+	</select>
+
+	<select id="queryFuntionByCheckFunctionId" parameterType="Long" resultMap="FunctionResultMap">
+		SELECT
+			*
+		FROM
+			TBL_FUNCTION
+		WHERE
+			checkFunctionId = #{checkFunctionId}
+
+	</select>
+
+	<delete id="deleteFuntionByCheckFunctionId" parameterType="map">
+		DELETE FROM TBL_FUNCTION
+		WHERE checkFunctionId = #{checkFunctionId}
+	</delete>
+
+	<delete id="deleteFuntionByCheckFunctionIdAndType" parameterType="map">
+		DELETE FROM TBL_FUNCTION
+		WHERE checkFunctionId = #{checkFunctionId} AND functionType = #{functionType}
+	</delete>
+
+	<select id="isPreFunction" parameterType="long" resultType="int">
+		SELECT
+			count(*)
+		FROM TBL_FUNCTION
+		WHERE preFunctionId = #{functionId}
+
+	</select>
+
+	<select id="selectById" parameterType="long" resultMap="FunctionResultMap">
+		SELECT
+			*
+		FROM
+			TBL_FUNCTION
+		WHERE functionId = #{functionId}
+
+	</select>
+
+	<select id="findAll" resultMap="FunctionResultMap">
+		SELECT
+			*
+		FROM TBL_FUNCTION
+		ORDER BY functionId desc
+
+	</select>
+
+</mapper>

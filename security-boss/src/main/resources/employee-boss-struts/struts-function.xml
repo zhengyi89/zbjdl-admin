@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.zbjdl.boss.admin.function" extends="employee-default"
+		namespace="/function">
+		<action name="showDetail"
+			class="com.zbjdl.boss.admin.function.action.ShowFunctionAction">
+			<result>/WEB-INF/pages/function/functionDetail.jsp</result>
+		</action>
+
+		<action name="initUpdate"
+			class="com.zbjdl.boss.admin.function.action.UpdateFunctionAction"
+			method="initUpdate">
+			<result>/WEB-INF/pages/function/editFunction.jsp</result>
+		</action>
+
+		<action name="update"
+			class="com.zbjdl.boss.admin.function.action.UpdateFunctionAction"
+			method="updateFunction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="delete"
+			class="com.zbjdl.boss.admin.function.action.UpdateFunctionAction"
+			method="delete">
+			<!-- <result name="detail" type="redirect">showDetail?functionId=${functionId}</result> 
+				<result type="redirect">functionMgr</result> -->
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="freeze"
+			class="com.zbjdl.boss.admin.function.action.UpdateFunctionAction"
+			method="freeze">
+			<!-- <result name="detail" type="redirect">showDetail?functionId=${functionId}</result> 
+				<result type="redirect">functionMgr</result> -->
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="activate"
+			class="com.zbjdl.boss.admin.function.action.UpdateFunctionAction"
+			method="activate">
+			<!-- <result name="detail" type="redirect">showDetail?functionId=${functionId}</result> 
+				<result type="redirect">functionMgr</result> -->
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="queryAllFunctions"
+			class="com.zbjdl.boss.admin.function.action.ShowFunctionAction"
+			method="queryAllFunctions">
+			<result type="json" />
+		</action>
+
+		<action name="functionMgr"
+			class="com.zbjdl.boss.admin.function.action.FunctionManagerAction">
+			<result name="success">/WEB-INF/pages/function/function_mgr.jsp</result>
+		</action>
+		<action name="functionStat"
+			class="com.zbjdl.boss.admin.function.action.FunctionManagerAction">
+			<result name="success">/WEB-INF/pages/function/function_stat.jsp</result>
+		</action>
+
+		<action name="initAdd"
+			class="com.zbjdl.boss.admin.function.action.UpdateFunctionAction"
+			method="initAdd">
+			<result>/WEB-INF/pages/function/editFunction.jsp</result>
+		</action>
+
+		<action name="add"
+			class="com.zbjdl.boss.admin.function.action.UpdateFunctionAction"
+			method="add">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+	</package>
+</struts>

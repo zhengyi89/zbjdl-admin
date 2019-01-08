@@ -1,0 +1,10 @@
+验证框架说明：
+一、属性：
+	1.req: 必填（选）【true|false;checkbox:{min:,max:},默认:false】
+	2.lable: 标题
+	3.trim: 【true|false,默认:defaultTrim可配】
+	4.datatype: 数据类型【email|mobile|phone|post|date|url|ip|mac|time|datetime|dateortime|int|float|decim|chinese|idcard,正则表达式】
+	5.equalTo: 重复输入 【｛id:'elementId'｝】   
+	6.len: 长度【{min:,max:}，可以可选一个】
+	7.number: 数值【{min:,max:}，可以可选一个】
+	8.msg:错误提示信息，设置msg后lable和默认提示将不起作用

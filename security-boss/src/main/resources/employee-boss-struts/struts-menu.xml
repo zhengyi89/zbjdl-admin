@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.zbjdl.boss.admin.menu" extends="employee-default"
+		namespace="/menu">
+		<action name="showMenu"
+			class="com.zbjdl.boss.admin.menu.action.ShowMenuAction">
+			<result>/WEB-INF/pages/menu/showMenu.jsp</result>
+			<result name="404">/WEB-INF/pages/main/404.jsp</result>
+		</action>
+
+		<action name="menuSetting"
+			class="com.zbjdl.boss.admin.menu.action.QueryMenuAction"
+			method="menuSetting">
+			<result>/WEB-INF/pages/menu/menuMgr.jsp</result>
+		</action>
+		<action name="query"
+			class="com.zbjdl.boss.admin.menu.action.QueryMenuAction">
+			<result type="json" />
+		</action>
+		<action name="showMenuDetail"
+			class="com.zbjdl.boss.admin.menu.action.QueryMenuAction"
+			method="showMenuDetail">
+			<result type="json" />
+		</action>
+
+		<action name="customerPortal"
+			class="com.zbjdl.boss.admin.menu.action.CustomerPortalAction">
+			<result name="success">/WEB-INF/pages/menu/customerPortal.jsp</result>
+		</action>
+		<action name="queryFunctionsByDeptId"
+			class="com.zbjdl.boss.admin.menu.action.QueryMenuAction"
+			method="queryFunctionsByDeptId">
+			<result type="json" />
+		</action>
+		<action name="add"
+			class="com.zbjdl.boss.admin.menu.action.AddMenuAction">
+			<!-- <result type="redirect">menuSetting</result> -->
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		<action name="initAdd" method="initAdd"
+			class="com.zbjdl.boss.admin.menu.action.AddMenuAction">
+			<result name="success">/WEB-INF/pages/menu/editMenu.jsp</result>
+		</action>
+		<action name="initUpdate" method="initUpdate"
+			class="com.zbjdl.boss.admin.menu.action.UpdateMenuAction">
+			<result name="success">/WEB-INF/pages/menu/editMenu.jsp</result>
+		</action>
+		<action name="delete"
+			class="com.zbjdl.boss.admin.menu.action.DeleteMenuAction">
+			<!-- <result type="redirect">menuSetting</result> -->
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		<action name="update"
+			class="com.zbjdl.boss.admin.menu.action.UpdateMenuAction">
+			<!-- <result type="redirect">menuSetting</result> -->
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		<action name="move"
+			class="com.zbjdl.boss.admin.menu.action.MoveMenuAction">
+			<result type="json" />
+		</action>
+
+		<action name="searchUserFunction"
+			class="com.zbjdl.boss.admin.menu.action.AddMenuAction" method="searchUserFunction">
+			<result>/WEB-INF/pages/menu/control/searchFunction.jsp</result>
+		</action>
+
+		<action name="validateMenuNameUnique"
+			class="com.zbjdl.boss.admin.menu.action.AddMenuAction" method="validateMenuNameUnique">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+
+		<action name="portalMenuMgr"
+			class="com.zbjdl.boss.admin.menu.action.PortalMenuAction">
+			<result>/WEB-INF/pages/menu/portalMenuMgr.jsp</result>
+		</action>
+		<action name="addPortalMenu"
+			class="com.zbjdl.boss.admin.menu.action.PortalMenuAction"
+			method="addPortalMenu">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		<action name="editPortalMenu"
+			class="com.zbjdl.boss.admin.menu.action.PortalMenuAction"
+			method="editPortalMenu">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		<action name="delPortalMenu"
+			class="com.zbjdl.boss.admin.menu.action.PortalMenuAction"
+			method="delPortalMenu">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		<action name="movePortalMenu"
+			class="com.zbjdl.boss.admin.menu.action.PortalMenuAction"
+			method="movePortalMenu">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+		<action name="importPortalMenu"
+			class="com.zbjdl.boss.admin.menu.action.PortalMenuAction"
+			method="importPortalMenu">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="includeProperties">errMsg</param>
+			</result>
+		</action>
+	</package>
+</struts>

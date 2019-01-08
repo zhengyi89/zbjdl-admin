@@ -1,0 +1,384 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>validate test</title>
+    <script type="text/javascript" src="../../lib/jquery.min.js">
+    </script>
+    <script type="text/javascript" src="jquery.validate.js">
+    </script>
+    <script type="text/javascript">
+      $(function(){
+      		
+          $('p').attr('style', 'color:red;');
+          $("#form").listenerValue('keyup', {
+          	len: {
+          		req: true,
+          		len: {min:6, max:60},
+          		label: "字节长度{min:6, max:60}"
+            }
+          }, errorFun);
+          $("#form").listenerChecked('click', {
+              item: {
+                  req: {
+                      min: 1,
+                      max: 3
+                  },
+                  label: "爱好"
+              },
+              sex: {
+                  req: true,
+                  label: "性别"
+              },
+              country: {
+                  req: true,
+                  label: "国家"
+              }
+          }, errorFun);
+          
+          $("#form").submit(function(){
+              return $(this).validateSubmit({
+                  item: {
+                      req: {
+                          min: 1,
+                          max: 3
+                      },
+                      label: "爱好"
+                  },
+                  sex: {
+                      req: true,
+                      label: "性别"
+                  },
+                  country: {
+                      req: true,
+                      label: "国家"
+                  },
+                  len: {
+                  		req: true,
+                  		len: {min:6, max:60},
+                  		label: "字节长度{min:6, max:60}"
+                  }
+              });
+          });
+          var aaa = function(a) {
+           alert(a.get(0));
+          };
+         // aaa($("body"));
+         // var rule = "aaa";
+         // rule = eval("(" + rule + ")");
+      });
+      
+      var errorFun = function(obj, errorMsg){
+      	var errorP = $("#error_" + obj.attr("name"));
+      	errorP.html(errorMsg ? errorMsg: '');
+      	    	
+     	};
+     	
+    </script>
+  </head>
+  <body>
+    <form id="form" action="haha.html" method="post">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="140" height="26" align="right">
+            自定正则然后执行自定义方法
+          </td>
+          <td width="168">
+            <input name="loginName" id="loginName" type="text" msg="格式错误，6-20个字符，可以是英文字母、阿拉伯数字或下划线组成" label="用户名" datatype="^[a-zA-Z0-9_]{6,20}$" />
+          </td>
+          <td width="367">
+            <p id="error_loginName">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="26" align="right">
+            &nbsp;
+          </td>
+          <td height="26" colspan="2" class="ash">
+            6-20个字符，可以是英文字母、阿拉伯数字或下划线组成。
+          </td>
+        </tr>
+        <tr>
+          <td width="140" height="26" align="right">
+            密码
+          </td>
+          <td width="168">
+            <input name="password" id="password" type="text" label="密码" req="true"/>
+          </td>
+          <td width="367">
+            <p id="error_password">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td width="140" height="26" align="right">
+            确认密码
+          </td>
+          <td width="168">
+            <input name="password2" id="password2" type="text" label="确认密码" equalTo="{id:'password'}" req="true"/>
+          </td>
+          <td width="367">
+            <p id="error_password2">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="26" align="right">
+            字节长度{min:6, max:60}
+          </td>
+          <td height="26">
+            <input name="len" id="len" type="text"/>
+          </td>
+          <td height="26">
+            <p id="error_len">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            字节长度(min:1)
+          </td>
+          <td height="26">
+            <input name="realName" id="realName" type="text" len="{min:1}" req="true"/>
+          </td>
+          <td height="26">
+            <p id="error_realName">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            字节长度(max:7)
+          </td>
+          <td height="26">
+            <input name="len_max" id="len_max" type="text" len="{max:7}"/>
+          </td>
+          <td height="26">
+            <p id="error_len_max">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            数字(min:0, max:100)(不是必填)
+          </td>
+          <td height="26">
+            <input name="number" id="number" type="text" number="{min:0, max:100}"/>
+          </td>
+          <td height="26">
+            <p id="error_number">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            数字(min:-10, max:0)(不是必填)
+          </td>
+          <td height="26">
+            <input name="number2" id="number2" type="text" number="{min:-10, max:0}"/>
+          </td>
+          <td height="26">
+            <p id="error_number2">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            &nbsp;
+          </td>
+          <td height="26" colspan="2" class="ash">
+            只有上限或下限同上
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            邮件：
+          </td>
+          <td height="26">
+            <input name="email" id="email" type="text" datatype="mac"/>
+          </td>
+          <td height="26">
+            <p id="error_email">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            电话：
+          </td>
+          <td height="26">
+            <input name="tel" id="tel" type="text" datatype="phone"/>
+          </td>
+          <td height="26">
+            <p id="error_tel">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            &nbsp;
+          </td>
+          <td height="26" colspan="2" class="ash">
+            电话格式：010-12456789
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            手机(必填)：
+          </td>
+          <td height="26">
+            <input name="mobilePhone" id="mobilePhone" type="text" datatype="mobile" label="手机" req="true"/>
+          </td>
+          <td height="26">
+            <p id="error_mobilePhone">
+            </p>
+          </td>
+        </tr>
+		<tr>
+          <td height="30" align="right">
+            身份证号：
+          </td>
+          <td height="26">
+            <input name="idcard" id="idcard" type="text" datatype="idcard"/>
+          </td>
+          <td height="26">
+            <p id="error_idcard">
+            </p>
+          </td>
+        </tr>
+		<tr>
+          <td height="30" align="right">
+            银行卡号：
+          </td>
+          <td height="26">
+            <input name="bankcard" id="bankcard" type="text" datatype="bankcard"/>
+          </td>
+          <td height="26">
+            <p id="error_bankcard">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            邮编(必填)：
+          </td>
+          <td height="26">
+            <input name="post" id="post" type="text" datatype="post" req="true" label="邮编"/>
+          </td>
+          <td height="26">
+            <p id="error_post">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            日期：
+          </td>
+          <td height="26">
+            <input name="date" id="date" type="text" datatype="date"/>
+          </td>
+          <td height="26">
+            <p id="error_date">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            日期(时间)：
+          </td>
+          <td height="26">
+            <input name="datetime" id="datetime" type="text" datatype="datetime" label="日期(时间)" req="true"/>
+          </td>
+          <td height="26">
+            <p id="error_datetime">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            时间：
+          </td>
+          <td height="26">
+            <input name="time" id="time" type="text" datatype="time" label="时间" req="true"/>
+          </td>
+          <td height="26">
+            <p id="error_time">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            url(必填)：
+          </td>
+          <td height="26">
+            <input name="url" id="url" type="text" datatype="url" label="url" req="true"/>
+          </td>
+          <td height="26">
+            <p id="error_url">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            textarea{min:10, max:100}
+          </td>
+          <td height="26">
+            <textarea name="textarea_test" len="{min:10, max:100}" req="true">
+            </textarea>
+          </td>
+          <td height="26">
+            <p id="error_textarea_test">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            爱好
+          </td>
+          <td height="26">
+            <input name="item" type="checkbox" value="台球"/>台球<input name="item" type="checkbox" value="足球"/>足球<input name="item" type="checkbox" value="唱歌"/>唱歌<input name="item" type="checkbox" value="跳舞"/>跳舞<input name="item" type="checkbox" value="啦啦"/>啦啦
+          </td>
+          <td height="26">
+            <p id="error_item">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            性别
+          </td>
+          <td height="26">
+            <input name="sex" type="radio" value="1"/>男<input name="sex" type="radio" value="0"/>女
+          </td>
+          <td height="26">
+            <p id="error_sex">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="30" align="right">
+            国家
+          </td>
+          <td height="26">
+            <select name="country" id="country">
+              <option value="">---请选择---</option>
+              <option value="cn">中国</option>
+              <option value="en">美国</option>
+              <option value="jn">日本</option>
+            </select>
+          </td>
+          <td height="26">
+            <p id="error_country">
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td height="26" colspan="3" align="center">
+            <input type="submit" value="提交信息"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+    <body>
+    </html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zbjdl.boss.admin.repository.FunctionDependenceDao">
+	<resultMap type="FunctionDependence" id="FunctionDependenceResultMap">
+		<id property="id" column="ID" javaType="java.lang.Long"/>
+		<result property="functionId" column="FUNCTIONID" javaType="java.lang.Long" />
+		<result property="dependentFunctionId" column="DEPENDENT_FUNCTIONID"
+			javaType="java.lang.Long" />
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id"
+		parameterType="FunctionDependence">
+		insert into TBL_FUNCTION_DEPENDENCE
+		(
+		FUNCTIONID,DEPENDENT_FUNCTIONID
+		)
+		values
+		(
+		#{functionId,jdbcType=BIGINT},
+		#{dependentFunctionId,jdbcType=BIGINT}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="long">
+		delete from
+		TBL_FUNCTION_DEPENDENCE where
+		id = #{id}
+	</delete>
+
+	<update id="update" parameterType="FunctionDependence">
+		update TBL_FUNCTION_DEPENDENCE
+		<set>
+			<if test="functionId != null">FUNCTIONID = #{functionId},</if>
+			<if test="dependentFunctionId != null">DEPENDENT_FUNCTIONID = #{dependentFunctionId},</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="selectById" parameterType="java.lang.Long" resultMap="FunctionDependenceResultMap">
+		select * from TBL_FUNCTION_DEPENDENCE where id=#{id}
+		 
+	</select>
+
+	<select id="findAll" resultMap="FunctionDependenceResultMap">
+		select *
+		from TBL_FUNCTION_DEPENDENCE
+		 
+	</select>
+</mapper>

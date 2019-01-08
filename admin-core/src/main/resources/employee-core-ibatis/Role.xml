@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.RoleDao">
+	<resultMap type="Role" id="RoleResultMap">
+		<id property="roleId" column="roleid" javaType="java.lang.Long"/>
+		<result property="roleName" column="rolename" jdbcType="VARCHAR"/>
+		<result property="description" column="description" jdbcType="VARCHAR"/>
+		<result property="roleStatus" column="rolestatus" jdbcType="VARCHAR"
+		        javaType="com.zbjdl.boss.admin.role.enums.RoleStatusEnum"/>
+		<result property="roleType" column="roleType" jdbcType="VARCHAR"
+		        javaType="com.zbjdl.boss.admin.role.enums.RoleTypeEnum"/>
+		<result property="departmentId" column="departmentId" jdbcType="BIGINT"/>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="roleId" parameterType="Role">
+		INSERT INTO TBL_ROLE
+		(
+			roleName, description, roleStatus, roleType, departmentId
+		)
+			VALUES
+			(
+				#{roleName,jdbcType=VARCHAR},
+				#{description,jdbcType=VARCHAR},
+				#{roleStatus,jdbcType=VARCHAR},
+				#{roleType,jdbcType=VARCHAR},
+				#{departmentId,jdbcType=BIGINT}
+			)
+	</insert>
+
+	<select id="findAll" resultMap="RoleResultMap">
+		SELECT
+			*
+		FROM TBL_ROLE
+		ORDER BY roleId
+
+	</select>
+
+	<select id="queryRolesByUserId" resultMap="RoleResultMap">
+		SELECT r.* FROM TBL_ROLE r
+			inner join TBL_USERANDROLERELATION ur
+				on r.roleid=ur.roleid and ur.USERID = #{userId}
+
+	</select>
+
+	<select id="selectById" parameterType="long" resultMap="RoleResultMap">
+		SELECT
+			*
+		FROM TBL_ROLE
+		WHERE roleId = #{value}
+
+	</select>
+
+	<select id="queryByRole" parameterType="Role" resultMap="RoleResultMap">
+		select * from TBL_ROLE as r where 1=1
+		<if test="roleName != null">and r.roleName = #{roleName}</if>
+		<if test="description != null">and r.description = #{description,jdbcType=VARCHAR}</if>
+		<if test="roleStatus != null">and r.roleStatus =
+			#{roleStatus,jdbcType=VARCHAR,javaType=com.zbjdl.boss.admin.role.enums.RoleStatusEnum}
+		</if>
+		<if test="roleType != null">and r.roleType =
+			#{roleType,jdbcType=VARCHAR,javaType=com.zbjdl.boss.admin.role.enums.RoleTypeEnum}
+		</if>
+		<if test="departmentId != null">and r.departmentId = #{departmentId,jdbcType=BIGINT}</if>
+
+	</select>
+
+	<update id="update" parameterType="Role">
+		update TBL_ROLE as r
+		<set>
+			<if test="roleName != null">r.roleName = #{roleName,jdbcType=VARCHAR},</if>
+			<if test="description != null">r.description = #{description,jdbcType=VARCHAR},</if>
+			<if test="departmentId != null">r.departmentId = #{departmentId,jdbcType=BIGINT},</if>
+			<if test="roleStatus != null">r.roleStatus =
+				#{roleStatus,jdbcType=VARCHAR,javaType=com.zbjdl.boss.admin.role.enums.RoleStatusEnum}
+			</if>
+		</set>
+		where r.roleId = #{roleId}
+	</update>
+
+	<delete id="delete" parameterType="long">
+		DELETE FROM TBL_ROLE
+		WHERE roleId = #{roleId}
+	</delete>
+
+	<delete id="deleteRoleByDepartmentId" parameterType="long">
+		DELETE FROM TBL_ROLE
+		WHERE DEPARTMENTID = #{departmentId}
+	</delete>
+
+	<delete id="deleteRoleRelationByDepartmentId" parameterType="long">
+		DELETE FROM TBL_USERANDROLERELATION
+		WHERE ROLEID IN (
+			SELECT
+				ROLEID
+			FROM TBL_ROLE
+			WHERE DEPARTMENTID = #{departmentId}
+		)
+	</delete>
+</mapper>

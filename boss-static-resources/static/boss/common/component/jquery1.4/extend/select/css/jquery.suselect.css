@@ -1,0 +1,13 @@
+
+.option{height:21px;background:url(../images/select_bg.gif) no-repeat;width:166px;line-height:21px;cursor: default;}
+.option_m{margin:3px 0 3px 5px;}
+.recruit div.option,.recruit input.input1{margin:0px 10px 0 0;float:left;}
+.option02{height:21px;width:160px;line-height:21px;text-indent:8px;}
+.option_btn{z-index:1;height:21px;color:#333;width:158px;padding-left:8px;text-indent:0}
+.option_btn div{width:132px;overflow:hidden;height:21px;text-indent:0}
+.op_box{position:relative;top:0;left:0;z-index:100;border:1px solid #B3B5BD;_border:none;}
+.op_box ul{margin:0;padding:0;}
+.op_list{display:block;background:#fff;max-height:175px;overflow-x:hidden;overflow-y:scroll;min-width:158px;_overflow:hidden;_border:#b7d8ed 1px solid;_left:0}
+.op_list{_height: expression( this.scrollHeight > 158 ? "159px" : "auto" );}
+.op_list li{padding:0 0 2px 4px;float:left;}
+.op_list li.current{background:#1B73B3;color:#fff;}

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbjdl.boss.admin.repository.UserDao">
+	<resultMap type="User" id="UserResultMap">
+		<id property="userId" column="USERID" javaType="java.lang.Long"/>
+		<result property="loginName" column="loginname"/>
+		<result property="userName" column="username"/>
+		<result property="password" column="password"/>
+		<result property="userStatus" column="userstatus" jdbcType="VARCHAR"
+		        javaType="com.zbjdl.boss.admin.user.enums.UserStatusEnum"/>
+		<result property="isSuperAdmin" column="issuperadmin"/>
+		<result property="isAdmin" column="isAdmin" jdbcType="VARCHAR"/>
+		<result property="pwdErrorNums" column="pwdErrorNums" javaType="java.lang.Integer"/>
+		<result property="primaryDepartmentId" column="primaryDepartmentId" javaType="java.lang.Long"/>
+		<result property="createTime" column="createtime" javaType="java.util.Date"/>
+		<result property="email" column="EMAIL" jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="mobile" column="MOBILE" jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="migration" column="MIGRATION" jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="pwdShowNotice" column="PWD_SHOW_NOTICE" jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="pwdLastModifiedTime" column="PWD_LAST_MODIFIEDTIME" javaType="java.util.Date"/>
+		<collection property="departmentList" ofType="Department" select="com.zbjdl.boss.admin.repository.DepartmentDao.queryByUserId"
+		            column="USERID"/>
+	</resultMap>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="userId" parameterType="User">
+		INSERT INTO TBL_USER
+		(
+			loginName, userName, password, userStatus, isSuperAdmin, isAdmin, primaryDepartmentId, createTime, EMAIL, MOBILE, MIGRATION, PWD_SHOW_NOTICE, PWD_LAST_MODIFIEDTIME
+		)
+			VALUES
+			(
+				#{loginName,jdbcType=VARCHAR},
+				#{userName,jdbcType=VARCHAR},
+				#{password,jdbcType=VARCHAR},
+				#{userStatus,jdbcType=VARCHAR},
+				#{isSuperAdmin,jdbcType=VARCHAR},
+				#{isAdmin,jdbcType=VARCHAR},
+				#{primaryDepartmentId,jdbcType=BIGINT},
+				current_timestamp,
+				#{email,jdbcType=VARCHAR},
+				#{mobile,jdbcType=VARCHAR},
+				#{migration,jdbcType=VARCHAR},
+				1,
+				timestamp('1973-12-18 03:30:28')
+			)
+	</insert>
+
+	<select id="findAll" resultMap="UserResultMap">
+		SELECT
+			*
+		FROM TBL_USER
+		ORDER BY userId
+
+	</select>
+
+	<select id="selectById" parameterType="java.lang.Long" resultMap="UserResultMap">
+		SELECT
+			*
+		FROM TBL_USER
+		WHERE userId = #{value}
+
+	</select>
+
+	<select id="queryByDepartmentId" parameterType="java.lang.Long" resultMap="UserResultMap">
+		select u.* from TBL_USER u inner join TBL_USER udr on udr.userId=u.userId and udr.primaryDepartmentId = #{departmentId}
+
+	</select>
+
+	<select id="findList" parameterType="User" resultMap="UserResultMap">
+		select * from TBL_USER as u where 1=1
+		<if test="loginName != null">and u.loginName = #{loginName,jdbcType=VARCHAR}</if>
+		<if test="userName != null">and u.userName = #{userName,jdbcType=VARCHAR}</if>
+		<if test="password != null">and u.password = #{password,jdbcType=VARCHAR}</if>
+		<if test="userStatus != null">and u.userStatus =
+			#{userStatus,jdbcType=VARCHAR,javaType=com.zbjdl.boss.admin.user.enums.UserStatusEnum}
+		</if>
+		<if test="isSuperAdmin != null">and u.isSuperAdmin = #{isSuperAdmin,jdbcType=VARCHAR}</if>
+		<if test="isAdmin != null">and u.isAdmin = #{isAdmin,jdbcType=VARCHAR}</if>
+		<if test="pwdErrorNums != null">and u.pwdErrorNums = #{pwdErrorNums,jdbcType=INT}</if>
+		<if test="primaryDepartmentId != null">and primaryDepartmentId = #{primaryDepartmentId,jdbcType=BIGINT}</if>
+		<if test="createTime != null">and u.createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+
+	</select>
+
+	<update id="updateUser" parameterType="User">
+		update TBL_USER as u
+		<set>
+			<if test="loginName != null">u.loginName = #{loginName,jdbcType=VARCHAR},</if>
+			<if test="userName != null">u.userName = #{userName,jdbcType=VARCHAR},</if>
+			<if test="password != null">u.password = #{password,jdbcType=VARCHAR},</if>
+			<if test="userStatus != null">u.userStatus =
+				#{userStatus,jdbcType=VARCHAR,javaType=com.zbjdl.boss.admin.user.enums.UserStatusEnum},
+			</if>
+			<if test="isSuperAdmin != null">u.isSuperAdmin = #{isSuperAdmin,jdbcType=VARCHAR},</if>
+			<if test="isAdmin != null">u.isAdmin = #{isAdmin,jdbcType=VARCHAR},</if>
+			<if test="pwdErrorNums != null">u.pwdErrorNums = #{pwdErrorNums,jdbcType=INTEGER},</if>
+			<if test="primaryDepartmentId != null">u.primaryDepartmentId = #{primaryDepartmentId,jdbcType=BIGINT},</if>
+			<if test="email != null">u.email = #{email,jdbcType=VARCHAR},</if>
+			<if test="mobile != null">u.mobile = #{mobile,jdbcType=VARCHAR},</if>
+			<if test="pwdShowNotice != null">u.PWD_SHOW_NOTICE = #{pwdShowNotice,jdbcType=VARCHAR},</if>
+			<if test="pwdLastModifiedTime != null">u.PWD_LAST_MODIFIEDTIME = #{pwdLastModifiedTime,jdbcType=TIMESTAMP},</if>
+		</set>
+		where u.userId = #{userId}
+	</update>
+
+	<update id="update" parameterType="User">
+		update TBL_USER as u
+		<set>
+			<if test="loginName != null">u.loginName = #{loginName,jdbcType=VARCHAR},</if>
+			<if test="userName != null">u.userName = #{userName,jdbcType=VARCHAR},</if>
+			<if test="password != null">u.password = #{password,jdbcType=VARCHAR},</if>
+			<if test="userStatus != null">u.userStatus =
+				#{userStatus,jdbcType=VARCHAR,javaType=com.zbjdl.boss.admin.user.enums.UserStatusEnum},
+			</if>
+			<if test="isSuperAdmin != null">u.isSuperAdmin = #{isSuperAdmin,jdbcType=VARCHAR},</if>
+			<if test="isAdmin != null">u.isAdmin = #{isAdmin,jdbcType=VARCHAR},</if>
+			<if test="pwdErrorNums != null">u.pwdErrorNums = #{pwdErrorNums,jdbcType=INTEGER},</if>
+			<if test="primaryDepartmentId != null">u.primaryDepartmentId = #{primaryDepartmentId,jdbcType=BIGINT},</if>
+			<if test="email != null">u.email = #{email,jdbcType=VARCHAR},</if>
+			<if test="mobile != null">u.mobile = #{mobile,jdbcType=VARCHAR},</if>
+			<if test="pwdShowNotice != null">u.PWD_SHOW_NOTICE = #{pwdShowNotice,jdbcType=VARCHAR},</if>
+			<if test="pwdLastModifiedTime != null">u.PWD_LAST_MODIFIEDTIME = #{pwdLastModifiedTime,jdbcType=TIMESTAMP},</if>
+		</set>
+		where u.userId = #{userId}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM TBL_USER
+		WHERE userId = #{value}
+	</delete>
+
+	<delete id="batchDeleteUserByDepartmentId" parameterType="java.lang.Long">
+		DELETE FROM TBL_USER
+		WHERE primaryDepartmentId = #{departmentId}
+	</delete>
+
+	<delete id="batchDeleteUserRelationByDepartmentId" parameterType="java.lang.Long">
+		DELETE FROM TBL_USERANDROLERELATION
+		WHERE USERID IN
+		      (SELECT
+			       USERID
+		       FROM TBL_USER
+		       WHERE primaryDepartmentId = #{departmentId})
+	</delete>
+
+	<select id="queryUserByLoginName" parameterType="java.lang.String" resultMap="UserResultMap">
+		SELECT
+			*
+		FROM TBL_USER AS u
+		WHERE u.loginName = #{loginName} AND u.USERSTATUS != 'FORBIDDEN'
+
+	</select>
+
+	<update id="updateUserPrimaryDepartmentId" parameterType="map">
+		UPDATE TBL_USER AS u
+		SET u.primaryDepartmentId = #{departmentId}
+		WHERE u.userId = #{userId}
+	</update>
+
+	<update id="migrateUser" parameterType="map">
+		UPDATE TBL_USER AS u
+		SET u.primaryDepartmentId = #{newDepartmentId}
+		WHERE u.primaryDepartmentId = #{departmentId}
+	</update>
+	
+	<select id="queryUserByMobile" parameterType="java.lang.String" resultMap="UserResultMap">
+		SELECT
+			*
+		FROM TBL_USER AS u
+		WHERE u.mobile = #{mobile} AND u.USERSTATUS != 'FORBIDDEN'
+
+	</select>
+</mapper>

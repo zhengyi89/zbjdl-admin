@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE taglib
+        PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+        "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+	<tlib-version>1.0</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>authz</short-name>
+	<uri>/boss-authz</uri>
+	<description>
+		Authorization Tag Library 
+	</description>
+
+	<tag>
+		<name>authorize</name>
+		<tag-class>com.zbjdl.boss.admin.frame.security.tag.AuthorizeTag</tag-class>
+		<description>
+			A simple tag to output or not the body of the tag if the
+			principal
+			has or doesn't have certain authorities.
+		</description>
+
+		<attribute>
+			<name>appName</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				The application Name ,such as employee-boss,member-boss
+				and so on .
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>actionNamespace</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				The namespace of the action or the path between appName
+				and Action Name , such as trade,log and so on .
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>actionName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				The action name ,such as showMenu,menuSetting and so on
+				.
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>actionSuffix</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				The action suffix in url,the default suffix is
+				'',accroding to you current action ,you can set it as 'action','do'
+				and so on .
+			</description>
+		</attribute>
+
+	</tag>
+
+
+</taglib>

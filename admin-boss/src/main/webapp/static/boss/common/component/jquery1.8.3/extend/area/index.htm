@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<style type="text/css">
+<!-- .STYLE1 {
+    color: #990000
+}
+-->
+</style>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>AreaOPT jquery插件</title>
+  <link type="text/css" href="css/jquery.areaopt.css" rel="stylesheet" />
+  <link type="text/css" href="../../css/ui-lightness/jquerySetSty.css" rel="stylesheet" />
+  <script src="../../lib/jquery.min.js"></script>
+  <script src="jquery.areaopt.js"></script>
+  <script src="areaopt.data.js"></script>
+  <script type="text/javascript">
+    $().ready(function(){
+		$("#textfield1,#textfield2").areaopt();
+		$("#span1").areaopt({click:false});
+	});
+  </script>
+  <style type="text/css">
+  <!--
+  
+  body, td, th {
+      font-size: 12px;
+  }
+  
+  body {
+      background-color: #fefefe;
+  }
+  
+  p {
+      width: 80%;
+      height: auto;
+      padding: 10px;
+      border: solid 1px #ddd;
+      color: #333;
+      margin-left: auto;
+      margin-right: auto;
+  }
+  
+  input {
+      border: #c6c6c6 1px solid;
+      height: 18px;
+      line-height: 20px;
+      padding: 0 2px;
+  } .STYLE2 {
+      color: #000033
+  }
+  -->
+  </style>
+</head>
+<body>
+  <p>
+    请选择您所在地区：<input type="text" id="textfield1" />
+  </p>
+  <p>
+    请选择您所在地区：<input type="text" name="textfield3" id="textfield2" value="0101" />
+  </p>
+  <p>
+    请选择您所在地区：<span id="span1">0201</span>
+  </p>
+  <div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.zbjdl.boss.admin.template" extends="employee-default" namespace="/template">
+
+		<!-- 日志模板管理 -->
+		<action name="logTemplateMgr" class="com.zbjdl.boss.admin.template.action.TemplateManageAction">
+			<result name="success">/WEB-INF/pages/template/logTemplate.jsp</result>
+		</action>
+
+		<!-- 双权限审核模板管理 -->
+		<action name="workItemTemplateMgr" class="com.zbjdl.boss.admin.template.action.TemplateManageAction">
+			<result name="success">/WEB-INF/pages/template/workItemTemplate.jsp</result>
+		</action>
+
+		<!-- 跳转到模板添加页面-->
+		<action name="showAddTemplate" class="com.zbjdl.boss.admin.template.action.TemplateManageAction">
+			<result name="success">/WEB-INF/pages/template/addTemplate.jsp</result>
+		</action>
+
+		<!-- 跳转到模板修改页面 -->
+		<action name="showUpdateTemplate" class="com.zbjdl.boss.admin.template.action.TemplateManageAction" method="showUpdateTemplate">
+			<result name="update">/WEB-INF/pages/template/updateTemplate.jsp</result>
+			<result name="add">/WEB-INF/pages/template/addTemplate.jsp</result>
+		</action>
+
+		<!-- 模板添加-->
+		<action name="addTemplate" class="com.zbjdl.boss.admin.template.action.TemplateManageAction" method="addTemplate">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+
+		<!-- 模板修改 -->
+		<action name="updateTemplate" class="com.zbjdl.boss.admin.template.action.TemplateManageAction" method="updateTemplate">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+
+		<!-- 日志模板删除-->
+		<action name="deleteLogTemplate" class="com.zbjdl.boss.admin.template.action.TemplateManageAction" method="deleteLogTemplate">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+
+		<!-- 双权限审核模板删除-->
+		<action name="deleteWorkItemTemplate" class="com.zbjdl.boss.admin.template.action.TemplateManageAction" method="deleteWorkItemTemplate">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+	</package>
+</struts>

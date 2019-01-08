@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:annotation-config />
+
+	<bean id="baseDao" class="org.mybatis.spring.support.SqlSessionDaoSupport"
+		abstract="true">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="departmentDao" class="com.zbjdl.boss.admin.user.dao.impl.DepartmentDaoImpl" />
+	<bean id="userDao" class="com.zbjdl.boss.admin.user.dao.impl.UserDaoImpl" />
+	<bean id="userStatusUpdateRecordDao"
+		class="com.zbjdl.boss.admin.user.dao.impl.UserStatusUpdateRecordDaoImpl" />
+	<bean id="functionDao"
+		class="com.zbjdl.boss.admin.function.dao.impl.FunctionDaoImpl" />
+	<bean id="menuDao" class="com.zbjdl.boss.admin.function.dao.impl.MenuDaoImpl" />
+	<bean id="roleDao" class="com.zbjdl.boss.admin.authority.dao.impl.RoleDaoImpl" />
+	<bean id="roleAndFunctionRelationDao"
+		class="com.zbjdl.boss.admin.authority.dao.impl.RoleAndFunctionRelationDaoImpl" />
+	<bean id="userAndRoleRelationDao"
+		class="com.zbjdl.boss.admin.authority.dao.impl.UserAndRoleRelationDaoImpl" />
+	<bean id="departmentAndFunctionRelationDao"
+		class="com.zbjdl.boss.admin.function.dao.impl.DepartmentAndFunctionRelationDaoImpl" />
+	<bean id="departmentConvert"
+		class="com.zbjdl.boss.admin.user.convert.impl.DepartmentConvert" />
+	<bean id="userConvert" class="com.zbjdl.boss.admin.user.convert.impl.UserConvert" />
+	<bean id="functionConvert"
+		class="com.zbjdl.boss.admin.function.convert.impl.FunctionConvert" />
+	<bean id="menuConvert"
+		class="com.zbjdl.boss.admin.function.convert.impl.MenuConvert" />
+	<bean id="roleConvert"
+		class="com.zbjdl.boss.admin.authority.convert.impl.RoleConvert" />
+	<bean id="functionDependenceDao"
+		class="com.zbjdl.boss.admin.function.dao.impl.FunctionDependenceDaoImpl" />
+
+	<bean id="operationLogTemplateConvert"
+		class="com.zbjdl.boss.admin.operationlog.convert.impl.OperationLogTemplateConvert" />
+	<bean id="operationLogDao"
+		class="com.zbjdl.boss.admin.operationlog.dao.impl.OperationLogDaoImpl" />
+	<bean id="operationLogTemplateDao"
+		class="com.zbjdl.boss.admin.operationlog.dao.impl.OperationLogTemplateDaoImpl" />
+	<bean id="workItemDao"
+		class="com.zbjdl.boss.admin.workitem.dao.impl.WorkItemDaoImpl" />
+	<bean id="workItemTemplateDao"
+		class="com.zbjdl.boss.admin.workitem.dao.impl.WorkItemTemplateDaoImpl" />
+	<bean id="workItemConvert"
+		class="com.zbjdl.boss.admin.workitem.convert.impl.WorkItemConvert" />
+	<bean id="workItemTemplateConvert"
+		class="com.zbjdl.boss.admin.workitem.convert.impl.WorkItemTemplateConvert" />
+
+	<bean id="exclusiveFunctionDao"
+		class="com.zbjdl.boss.admin.function.dao.impl.ExclusiveFunctionDaoImpl" />
+	<bean id="exclusiveFunctionConvert"
+		class="com.zbjdl.boss.admin.function.convert.impl.ExclusiveFunctionConvert" />
+
+	<bean id="upgradeNoticeDao"
+		class="com.zbjdl.boss.admin.notice.dao.impl.UpgradeNoticeDaoImpl" />
+	<bean id="upgradeNoticeHideDao"
+		class="com.zbjdl.boss.admin.notice.dao.impl.UpgradeNoticeHideDaoImpl" />
+
+	<bean id="portalMenuConvert"
+		class="com.zbjdl.boss.admin.function.convert.impl.PortalMenuConvert" />
+	<bean id="portalMenuDao"
+		class="com.zbjdl.boss.admin.function.dao.impl.PortalMenuDaoImpl" />
+</beans>
