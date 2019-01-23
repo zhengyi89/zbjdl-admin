@@ -36,7 +36,25 @@
   <div class="content_logo"><img src="${resourcePath}/images/logo.png"/></div>
   <div class="content_nav">
   	<#if Session.SESSION_ACCOUNTINFO??>
-  		代帐中  &nbsp; ${Session.SESSION_ACCOUNTINFO.systemName} &nbsp;  ${Session.SESSION_ACCOUNTINFO.accountMonth}
+  		<#if Session.SESSION_ACCOUNTINFO.accountStatus>
+			已结账
+		</#if>  
+  		<#if !Session.SESSION_ACCOUNTINFO.accountStatus>
+			记账中
+		</#if>  
+		&nbsp; ${Session.SESSION_ACCOUNTINFO.systemName} &nbsp;  ${Session.SESSION_ACCOUNTINFO.accountMonth}
+  		
+  		<!-- <select id="accountMonth" name="accountMonth" onchange="changeAccountMonth();">
+  			<#list Session.SESSION_ACCOUNTINFO.dateSet as date> 
+		   		<option value="${date}"
+		   			<#if date == Session.SESSION_ACCOUNTINFO.accountMonth>
+		   				selected
+					</#if>
+		   		>${date}</option>
+		   		
+			</#list>
+		</select>
+		-->
   	</#if>
   		
 <!--    <a class="notice" alt="账户维护"><span class="glyphicon glyphicon-cog"></span><span class="badge count bg-success">4</span></a>
@@ -103,7 +121,6 @@
 
 
  </#if>
-
 </body>
 </html>
 </#if>
